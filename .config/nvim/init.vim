@@ -257,6 +257,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'cespare/vim-toml'
 Plug 'pangloss/vim-javascript'
 Plug 'Townk/vim-autoclose'
+Plug 'editorconfig/editorconfig-vim'
 
 " PHP
 Plug 'roxma/LanguageServer-php-neovim', {'do': 'composer install && composer run-script parse-stubs'}
