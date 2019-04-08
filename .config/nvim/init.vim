@@ -166,11 +166,11 @@ inoremap jk <Esc>
 inoremap kj <Esc>
 
 " 行を移動
-nnoremap <C-Up> "zdd<Up>"zP
-nnoremap <C-Down> "zdd"zp
+nnoremap <S-Up> "zdd<Up>"zP
+nnoremap <S-Down> "zdd"zp
 " 複数行を移動
-vnoremap <C-Up> "zx<Up>"zP`[V`]
-vnoremap <C-Down> "zx"zp`[V`]
+vnoremap <S-Up> "zx<Up>"zP`[V`]
+vnoremap <S-Down> "zx"zp`[V`]
 
 " その他のキーマッピング
 imap <C-h> <BS>
@@ -424,8 +424,9 @@ nnoremap <Space>n :NERDTreeFind<CR>
 " NERDTree ファイラの表示切り替え
 nnoremap <Space>e :NERDTreeToggle<CR>
 
-" fugitive git status
+" fugitive & Denite git status
 nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
+nnoremap <Space>ss :Denite gitstatus<CR>
 
 " Denite
 nnoremap <Space>u :Denite
