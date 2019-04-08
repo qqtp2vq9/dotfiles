@@ -163,7 +163,8 @@ cnoremap <c-j> <down>
 " 挿入モードでのキーマッピング
 inoremap jj <Esc>
 inoremap jk <Esc>
-inoremap kj <Esc>
+inoremap kj <Esc><Right>
+inoremap <C-]> <Esc><Right>
 
 " 行を移動
 nnoremap <S-Up> "zdd<Up>"zP
