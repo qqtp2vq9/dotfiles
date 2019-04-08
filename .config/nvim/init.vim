@@ -614,7 +614,13 @@ let g:neosnippet#expand_word_boundary = 1
 
 " NERDTree設定
 let NERDTreeShowHidden = 1
-let g:NERDTreeWinPos="right
+let g:NERDTreeWinPos="right"
+function s:MoveToFileAtStart()
+  call feedkeys("\<Space>")
+  call feedkeys("\w")
+  call feedkeys("\h")
+endfunction
+autocmd vimenter * NERDTree | call s:MoveToFileAtStart()
 autocmd FileType vue syntax sync fromstart
 
 command! Filepath echo expand('%:p')
