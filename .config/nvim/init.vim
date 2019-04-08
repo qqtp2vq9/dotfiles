@@ -430,6 +430,7 @@ nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
 
 " Denite
 nnoremap <Space>u :Denite
+nnoremap <Space>bb :Denite buffer
 nnoremap <Space>br :Denite gitbranch<CR>
 
 " Window操作
