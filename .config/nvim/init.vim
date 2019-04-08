@@ -219,7 +219,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'Yggdroot/indentLine'
 " あいまい検索インターフェース
 " ファイル検索やgrepでよく使う
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 " コメントアウトのトグル <Ctrl--> か <Ctrl-_> で使える
 Plug 'tomtom/tcomment_vim'
@@ -285,6 +285,7 @@ Plug 'prettier/vim-prettier', {
 " その他
 Plug 'simeji/winresizer'
 Plug 'osyo-manga/vim-anzu'
+Plug 'skywind3000/asyncrun.vim'
 
 call plug#end()
 
