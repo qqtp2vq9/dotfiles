@@ -623,5 +623,7 @@ endfunction
 autocmd vimenter * NERDTree | call s:MoveToFileAtStart()
 autocmd FileType vue syntax sync fromstart
 
+let mapleader = ","
+
 command! Filepath echo expand('%:p')
 command! InitVim e ~/.config/nvim/init.vim
