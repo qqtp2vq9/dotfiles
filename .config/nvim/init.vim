@@ -216,8 +216,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 " インデント可視化
 Plug 'Yggdroot/indentLine'
-" Normalモード <Ctrl-p> でファイルの選択を開く (fzf使えないとき用)
-Plug 'kien/ctrlp.vim'
 " あいまい検索インターフェース
 " ファイル検索やgrepでよく使う
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -284,6 +282,7 @@ Plug 'prettier/vim-prettier', {
 
 " その他
 Plug 'simeji/winresizer'
+Plug 'osyo-manga/vim-anzu'
 
 call plug#end()
 
@@ -430,7 +429,7 @@ nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
 
 " Denite
 nnoremap <Space>u :Denite
-nnoremap <Space>bb :Denite buffer
+nnoremap <Space>bb :Denite buffer<CR>
 nnoremap <Space>br :Denite gitbranch<CR>
 
 " Window操作
@@ -439,18 +438,27 @@ nnoremap <Space>wj <c-w>j
 nnoremap <Space>wk <c-w>k
 nnoremap <Space>wl <c-w>l
 
-" ctrlp <Ctrl-p>でファイル履歴を検索
-let g:ctrlp_cmd = 'CtrlPMRUFiles'
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:20,result:50'
-let g:ctrlp_root_markers = ['.git', 'Cargo.toml', 'stack.yaml', 'Gemfile']
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_mruf_max = 500
-let g:ctrlp_open_new_file = 'h'
-let g:ctrlp_use_migemo = 1
-if executable('rg')
-    let g:ctrlp_user_command = 'rg %s --files --hidden --no-ignore --follow --color=never --glob "!.git/*"'
-    let g:ctrlp_use_caching = 0
-endif
+" search操作
+nmap n <Plug>(anzu-n-with-echo)
+nmap N <Plug>(anzu-N-with-echo)
+nmap * <Plug>(anzu-star)
+nmap # <Plug>(anzu-sharp)
+
+" denite
+" denite/insert モードのときは，C- で移動できるようにする
+call denite#custom#map('insert', "<C-j>", '<denite:move_to_next_line>')
+call denite#custom#map('insert', "<C-k>", '<denite:move_to_previous_line>')
+
+" tabopen や vsplit のキーバインドを割り当て
+call denite#custom#map('insert', "<C-t>", '<denite:do_action:tabopen>')
+call denite#custom#map('insert', "<C-v>", '<denite:do_action:vsplit>')
+call denite#custom#map('normal', "v", '<denite:do_action:vsplit>')
+
+" jj, jk, kj で denite/insert を抜けるようにする
+call denite#custom#map('insert', 'jj', '<denite:enter_mode:normal>')
+call denite#custom#map('insert', 'jk', '<denite:enter_mode:normal>')
+call denite#custom#map('insert', 'kj', '<denite:enter_mode:normal>')
+
 
 " ale 諸設定
 let g:ale_set_highlights = 1
