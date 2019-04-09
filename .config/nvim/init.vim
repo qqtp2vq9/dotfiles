@@ -405,14 +405,14 @@ let g:fzf_commands_expect = 'enter'
 if executable('rg')
     command! -bang -nargs=* Rg
         \ call fzf#vim#grep(
-        \   'rg --line-number --no-heading '.shellescape(<q-args>), 0,
-        \   fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 3..'}, 'up:50%:wrap'))
+        \ 'rg --column --line-number --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 0,
+        \ <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:50%')
+        \ : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+        \ <bang>0)
 endif
 
 " fzf コマンド検索
 nnoremap <Space>p :Commands<CR>
-" fzf ホームディレクトリからのファイル検索
-" nnoremap <silent> <Space>ff :Files ~/<CR>
 " fzf Gitプロジェクト内のファイル検索
 nnoremap <Space>f :GFiles<CR>
 " fzf ファイル履歴検索
