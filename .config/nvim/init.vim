@@ -458,6 +458,11 @@ call denite#custom#map('normal', "o", '<denite:do_action:open>')
 call denite#custom#map('normal', "c", '<denite:do_action:checkout>')
 call denite#custom#map('normal', "r", '<denite:do_action:reset>')
 
+" insert mode keymap
+call denite#custom#map('insert', "<C-o>", '<denite:do_action:open>')
+call denite#custom#map('insert', "<C-c>", '<denite:do_action:checkout>')
+call denite#custom#map('insert', "<C-r>", '<denite:do_action:reset>')
+
 " tabopen や vsplit のキーバインドを割り当て
 call denite#custom#map('insert', "<C-t>", '<denite:do_action:tabopen>')
 call denite#custom#map('insert', "<C-v>", '<denite:do_action:vsplit>')
@@ -619,6 +624,19 @@ xmap <C-k> <Plug>(neosnippet_expand_target)
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#enable_completed_snippet = 1
 let g:neosnippet#expand_word_boundary = 1
+
+" multiple Cursor時は補完をきる
+function! Multiple_cursors_before()
+  if exists(':DeopleteLock')==2
+    exe 'DeopleteLock'
+  endif
+endfunction
+
+function! Multiple_cursors_after()
+  if exists(':DeopleteUnlock')==2
+    exe 'DeopleteUnlock'
+  endif
+endfunction
 
 " NERDTree設定
 let NERDTreeShowHidden = 1
