@@ -453,6 +453,11 @@ nmap # <Plug>(anzu-sharp)
 call denite#custom#map('insert', "<C-j>", '<denite:move_to_next_line>')
 call denite#custom#map('insert', "<C-k>", '<denite:move_to_previous_line>')
 
+" normal mode keymap
+call denite#custom#map('normal', "o", '<denite:do_action:open>')
+call denite#custom#map('normal', "c", '<denite:do_action:checkout>')
+call denite#custom#map('normal', "r", '<denite:do_action:reset>')
+
 " tabopen や vsplit のキーバインドを割り当て
 call denite#custom#map('insert', "<C-t>", '<denite:do_action:tabopen>')
 call denite#custom#map('insert', "<C-v>", '<denite:do_action:vsplit>')
@@ -539,6 +544,7 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['html'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['css'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['txt'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = ' '
 
 " vim-rooter
 let g:rooter_change_directory_for_non_project_files = 'current'
