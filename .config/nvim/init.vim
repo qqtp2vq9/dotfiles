@@ -453,26 +453,23 @@ nmap # <Plug>(anzu-sharp)
 call denite#custom#map('insert', "<C-j>", '<denite:move_to_next_line>')
 call denite#custom#map('insert', "<C-k>", '<denite:move_to_previous_line>')
 
-" normal mode keymap
-call denite#custom#map('normal', "o", '<denite:do_action:open>')
-call denite#custom#map('normal', "c", '<denite:do_action:checkout>')
-call denite#custom#map('normal', "r", '<denite:do_action:reset>')
-
 " insert mode keymap
-call denite#custom#map('insert', "<C-o>", '<denite:do_action:open>')
-call denite#custom#map('insert', "<C-c>", '<denite:do_action:checkout>')
-call denite#custom#map('insert', "<C-r>", '<denite:do_action:reset>')
+call denite#custom#map('insert', "<C-a>", '<denite:do_action:open>')
 
 " tabopen や vsplit のキーバインドを割り当て
 call denite#custom#map('insert', "<C-t>", '<denite:do_action:tabopen>')
 call denite#custom#map('insert', "<C-v>", '<denite:do_action:vsplit>')
-call denite#custom#map('normal', "v", '<denite:do_action:vsplit>')
 
 " jj, jk, kj で denite/insert を抜けるようにする
 call denite#custom#map('insert', 'jj', '<denite:enter_mode:normal>')
 call denite#custom#map('insert', 'jk', '<denite:enter_mode:normal>')
 call denite#custom#map('insert', 'kj', '<denite:enter_mode:normal>')
 
+" normal mode keymap
+call denite#custom#map('normal', "v", '<denite:do_action:vsplit>')
+call denite#custom#map('normal', "o", '<denite:do_action:open>')
+call denite#custom#map('normal', "c", '<denite:do_action:checkout>')
+call denite#custom#map('normal', "r", '<denite:do_action:reset>')
 
 " ale 諸設定
 let g:ale_set_highlights = 1
