@@ -46,6 +46,9 @@ set confirm
 set title
 " 行番号を表示
 set number
+" バックアップファイルを作らない
+set nobackup
+set nowritebackup
 " 現在の行を強調表示 (カーソル移動が重くなる)
 " set cursorline
 " 行末の1文字先までカーソルを移動できるように
@@ -209,7 +212,7 @@ Plug 'vim-jp/vimdoc-ja'
 " カラースキーム
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 " ステータスバーなどの見た目を綺麗にする
-Plug 'itchyny/lightline.vim'
+Plug 'vim-airline/vim-airline'
 " サイドバー表示のファイラ
 Plug 'scrooloose/nerdtree'
 " NERDTreeにファイルアイコンをつける
@@ -231,56 +234,31 @@ Plug 'kana/vim-smartinput'
 Plug 'airblade/vim-rooter'
 " テキストを囲うものを編集しやすくする (カッコやタグなど)
 Plug 'tpope/vim-surround'
-" スニペット挿入
-Plug 'SirVer/ultisnips'
-" スニペット リスト
-Plug 'honza/vim-snippets'
 " Git操作をVimから。 :Gstatusが便利
 Plug 'tpope/vim-fugitive'
-" mulitiple cursor
+" multiple cursor
 Plug 'terryma/vim-multiple-cursors'
 " denite
 Plug 'Shougo/denite.nvim'
 Plug 'chemzqm/denite-git'
-" Linter
-Plug 'w0rp/ale'
-" 補完
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" 言語サーバクライアント
-Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'do': 'bash install.sh',
-      \ }
+" 補完・言語サーバクライアント
+Plug 'Shougo/neoinclude.vim'
+Plug 'jsfaint/coc-neoinclude'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install() } }
 
 " 言語系
 Plug 'plasticboy/vim-markdown'
-Plug 'cespare/vim-toml'
-Plug 'pangloss/vim-javascript'
 Plug 'Townk/vim-autoclose'
 Plug 'editorconfig/editorconfig-vim'
-
-" PHP
-Plug 'roxma/LanguageServer-php-neovim', {'do': 'composer install && composer run-script parse-stubs'}
+Plug 'othree/yajs.vim'
 Plug 'beanworks/vim-phpfmt'
-
-" node
 Plug 'heavenshell/vim-jsdoc', { 'for': 'javascript' }
-Plug 'moll/vim-node'
-
-" ejs
 Plug 'nikvdp/ejs-syntax', { 'for': 'ejs' }
-
-" vue
-Plug 'posva/vim-vue', { 'for': 'vue' }
-
-" front end
-Plug 'mattn/emmet-vim'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'elmcast/elm-vim'
-Plug 'leafgarland/typescript-vim'
 Plug 'prettier/vim-prettier', {
     \ 'do': 'yarn install',
-    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss'] }
+    \ 'for': ['javascript', 'typescript', 'vue', 'ejs', 'css', 'less', 'scss'] }
+Plug 'posva/vim-vue', { 'for': 'vue' }
 
 " その他
 Plug 'simeji/winresizer'
@@ -295,6 +273,17 @@ autocmd ColorScheme * highlight Visual ctermbg = lightblue
 set cursorline
 autocmd ColorScheme * highlight CursorLine
 
+" leaderキー変更
+let mapleader = ","
+
+" airline設定
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+nmap <C-p> <Plug>AirlineSelectPrevTab
+nmap <C-n> <Plug>AirlineSelectNextTab
+
 " vimdoc-ja ヘルプを日本語優先にする
 set helplang=ja,en
 
@@ -308,93 +297,8 @@ highlight TablineSel ctermbg=NONE guibg=NONE
 highlight LineNr ctermbg=NONE guibg=NONE
 highlight CursorLineNr ctermbg=NONE guibg=NONE
 
-" lightline カレントディレクトリからの相対パス
-function! LightLineFilename()
-  return expand('%')
-endfunction
-
-" lightline ステータスバーの表示設定
-let g:lightline = {
-            \ 'component': {
-            \   'readonly': '%{&readonly?"":""}',
-            \   'coordinate': '%c: %l/%L',
-            \   'truncate': '%<',
-            \   'bubo': "",
-            \ },
-            \ 'active': {
-            \   'left': [['mode', 'paste'], ['filename', 'modified', 'readonly', 'gitbranch'], ['truncate']],
-            \   'right': [['coordinate'], ['fileformat', 'fileencoding', 'filetype'], ['bubo', 'linter_errors', 'linter_warnings', 'linter_ok']]
-            \ },
-            \ 'component_function': {
-            \   'gitbranch': 'GitBranch'
-            \ },
-            \ 'separator': { 'left': "", 'right': " " },
-            \ 'subseparator': { 'left': "", 'right': " " }
-            \ }
-
-" lightline タブバーの表示設定
-let g:lightline.tabline = {
-            \ 'left': [ [ 'tabs' ] ],
-            \ 'right': [ [ 'close' ] ] }
-
-" lightline 色の設定
-let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
-
-" lightline コンポーネントが何を返すか
-let g:lightline.component_expand = {
-            \ 'tabs': 'lightline#tabs',
-            \ 'linter_warnings': 'LightlineLinterWarnings',
-            \ 'linter_errors': 'LightlineLinterErrors',
-            \ 'linter_ok': 'LightlineLinterOK'
-            \ }
-
-" lightline コンポーネントの表示色
-let g:lightline.component_type = {
-            \ 'tabs': 'tabsel',
-            \ 'readonly': 'error',
-            \ 'linter_warnings': 'warning',
-            \ 'linter_errors': 'error'
-            \ }
-
-" lightline 現在のgitブランチ
-function! GitBranch() abort
-  let l:branch = fugitive#head()
-  return l:branch == '' ? '' : printf(" %s", branch)
-endfunction
-
-" lightline ALEのエラー数
-" ale
-function! LightlineLinterErrors() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf("%d ", all_errors)
-endfunction
-
-" lightline ALEの警告数
-" ale
-function! LightlineLinterWarnings() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf("%d ", all_non_errors)
-endfunction
-
-" lightline OK
-" ale
-function! LightlineLinterOK() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? "" : ''
-endfunction
-
-" lightline Lint時にlightline表示更新
-" ale
-augroup LightLineOnALE
-  autocmd!
-  autocmd User ALELint call lightline#update()
-augroup END
+" multiple cursor
+let g:multi_cursor_start_word_key      = '<leader><C-n>'
 
 " fzf 表示領域
 let g:fzf_layout = { 'down': '~70%' }
@@ -471,67 +375,6 @@ call denite#custom#map('normal', "o", '<denite:do_action:open>')
 call denite#custom#map('normal', "c", '<denite:do_action:checkout>')
 call denite#custom#map('normal', "r", '<denite:do_action:reset>')
 
-" ale 諸設定
-let g:ale_set_highlights = 1
-" let g:ale_fix_on_save = 1
-let g:ale_linters = {
-      \ 'html': [],
-      \ 'css': ['stylelint'],
-      \ 'javascript': ['eslint'],
-      \ 'vue': ['eslint']
-      \ }
-" let g:ale_fixers = {
-"       \ 'javascript': ['prettier']
-"       \ }
-let g:ale_sign_column_always = 1
-let g:ale_javascript_prettier_use_local_config = 1
-
-" カーソル表示
-let &t_SI = "\<Esc>[6 q"
-let &t_SR = "\<Esc>[4 q"
-let &t_EI = "\<Esc>[0 q"
-
-if has('nvim')
-    let g:deoplete#enable_at_startup = 1
-
-    " python3 設定
-    let g:python3_host_prog = '/usr/local/bin/python3'
-    " LanguageClient
-    " 各言語の Language Server 設定
-    let g:LanguageClient_serverCommands = {
-                \ 'html': ['html-languageserver', '--stdio'],
-                \ 'css': ['css-languageserver', '--stdio'],
-    	        \ 'javascript': ['~/.nodebrew/node/v8.15.0/bin/javascript-typescript-stdio'],
-    	        \ 'typescript': ['~/.nodebrew/node/v8.15.0/bin/javascript-typescript-stdio'],
-                \ 'vue': ['vls']
-                \ }
-    let g:LanguageClient_autoStart = 1
-
-    " LanguageClient カーソル下のドキュメント表示
-    nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-    " LanguageClient カーソル下の定義ジャンプ
-    nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-    " LanguageClient カーソル下のリネーム
-    nnoremap <silent> <Space>lr :call LanguageClient_textDocument_rename()<CR>
-    " LanguageClient シンボルリスト
-    nnoremap <silent> <Space>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-    " LanguageClient カーソル下の参照リスト
-    nnoremap <silent> <Space>ll :call LanguageClient_textDocument_references()<CR>
-    " LanguageClient テキスト整形
-    nnoremap <silent> <Space>lf :call LanguageClient_textDocument_formatting()<CR>
-    " LanguageClient 範囲のテキスト整形
-    nnoremap <silent> <Space>lF :call LanguageClient_textDocument_rangeFormatting()<CR>
-endif
-
-" UltiSnips スニペット展開
-let g:UltiSnipsExpandTrigger="<c-k>"
-" UltiSnips スニペット次の位置に移動
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-" UltiSnips スニペット前の位置に戻る
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" UltiSnips スニペットエディタの表示方法
-let g:UltiSnipsEditSplit="vertical"
-
 " vim-devicons 諸設定
 let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
@@ -564,76 +407,115 @@ let g:vim_markdown_conceal = 0
 " Vim
 let g:indentLine_color_term = 239
 
-" 自作スニペット置場
-set runtimepath+=~/.vim/snippets
-let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
-
-" deoplete auto complete
-set completeopt+=noinsert
-
 " Mac vimr用
 if has('gui_vimr')
     " cursorlineすると遅くなる
     set nocursorline
 endif
 
-" smartinput設定
-call smartinput#map_to_trigger('i', '<Plug>(smartinput_BS)',
-      \                        '<BS>',
-      \                        '<BS>')
-call smartinput#map_to_trigger('i', '<Plug>(smartinput_C-h)',
-      \                        '<BS>',
-      \                        '<C-h>')
-call smartinput#map_to_trigger('i', '<Plug>(smartinput_CR)',
-      \                        '<Enter>',
-      \                        '<Enter>')
+" Better display for messages
+set cmdheight=2
 
-" <TAB>: completion.
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
-      \ deoplete#manual_complete()
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort "{{{
+function! s:check_back_space() abort
   let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-" <S-TAB>: completion back.
-inoremap <expr><S-TAB> 
-      \ pumvisible() ? "\<C-p>" : "\<C-h>"
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <C-space> coc#refresh()
 
-" <BS> で閉じて文字削除
-imap <expr> <BS>
-      \ deoplete#smart_close_popup() . "\<Plug>(smartinput_BS)"
-" <C-h> で閉じる
-imap <expr> <C-h>
-      \ deoplete#smart_close_popup()
-" <CR> で候補を選択し改行する
-" ポップアップがないときには改行する
-imap <expr> <CR> pumvisible() ?
-      \ deoplete#close_popup() : "\<Plug>(smartinput_CR)"
+" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" neosnippet.vim
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#enable_completed_snippet = 1
-let g:neosnippet#expand_word_boundary = 1
+nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
+nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
 
-" multiple Cursor時は補完をきる
-function! Multiple_cursors_before()
-  if exists(':DeopleteLock')==2
-    exe 'DeopleteLock'
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
   endif
 endfunction
 
-function! Multiple_cursors_after()
-  if exists(':DeopleteUnlock')==2
-    exe 'DeopleteUnlock'
-  endif
-endfunction
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+vmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use `:Format` for format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` for fold current buffer
+command! -nargs=? Fold :call   CocAction('fold', <f-args>)
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>ex :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>sy  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+
+" Resume latest coc list
+nnoremap <silent> <space>re  :<C-u>CocListResume<CR>
 
 " NERDTree設定
 let NERDTreeShowHidden = 1
@@ -645,8 +527,6 @@ function s:MoveToFileAtStart()
 endfunction
 autocmd vimenter * NERDTree | call s:MoveToFileAtStart()
 autocmd FileType vue syntax sync fromstart
-
-let mapleader = ","
 
 command! Filepath echo expand('%:p')
 command! InitVim e ~/.config/nvim/init.vim
