@@ -99,7 +99,6 @@ set nofoldenable
 " スクロールに行数の余裕をもたせる
 set scrolloff=7
 
-
 "================================================================
 " 自動コマンド
 "================================================================
@@ -250,11 +249,15 @@ Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install() } }
 Plug 'plasticboy/vim-markdown'
 Plug 'Townk/vim-autoclose'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'othree/yajs.vim'
-Plug 'beanworks/vim-phpfmt'
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'beanworks/vim-phpfmt', { 'for': 'php' }
 Plug 'heavenshell/vim-jsdoc', { 'for': 'javascript' }
 Plug 'nikvdp/ejs-syntax', { 'for': 'ejs' }
-Plug 'hail2u/vim-css3-syntax'
+Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
+Plug 'othree/html5.vim', { 'for': 'html' }
+Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
+Plug 'groenewege/vim-less', { 'for': 'less' }
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'prettier/vim-prettier', {
     \ 'do': 'yarn install',
     \ 'for': ['javascript', 'typescript', 'vue', 'ejs', 'css', 'less', 'scss'] }
@@ -298,7 +301,7 @@ highlight LineNr ctermbg=NONE guibg=NONE
 highlight CursorLineNr ctermbg=NONE guibg=NONE
 
 " multiple cursor
-let g:multi_cursor_start_word_key      = '<leader><C-n>'
+let g:multi_cursor_start_word_key      = '<Space><C-n>'
 
 " fzf 表示領域
 let g:fzf_layout = { 'down': '~70%' }
@@ -316,29 +319,29 @@ if executable('rg')
 endif
 
 " fzf コマンド検索
-nnoremap <Space>p :Commands<CR>
+nnoremap <Space>fc :Commands<CR>
 " fzf Gitプロジェクト内のファイル検索
-nnoremap <Space>f :GFiles<CR>
+nnoremap <Space>ff :GFiles<CR>
 " fzf ファイル履歴検索
-nnoremap <Space>h :History<CR>
+nnoremap <Space>fh :History<CR>
 " fzf バッファ検索
-nnoremap <Space>bf :Buffers<CR>
+nnoremap <Space>fb :Buffers<CR>
 " fzf カレントディレクトリ以下でgrep検索
-nnoremap <Space>g :Rg<CR>
+nnoremap <Space>fg :Rg<CR>
 
 " NERDTree 現在のファイルを選択した状態でファイラを開く
-nnoremap <Space>n :NERDTreeFind<CR>
+nnoremap <Space>nf :NERDTreeFind<CR>
 " NERDTree ファイラの表示切り替え
-nnoremap <Space>e :NERDTreeToggle<CR>
+nnoremap <Space>nt :NERDTreeToggle<CR>
 
 " fugitive & Denite git status
 nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
-nnoremap <Space>ss :Denite gitstatus<CR>
+nnoremap <Space>ds :Denite gitstatus<CR>
 
 " Denite
-nnoremap <Space>u :Denite
-nnoremap <Space>bb :Denite buffer<CR>
-nnoremap <Space>br :Denite gitbranch<CR>
+nnoremap <Space>d :Denite
+nnoremap <Space>db :Denite buffer<CR>
+nnoremap <Space>dr :Denite gitbranch<CR>
 
 " Window操作
 nnoremap <Space>wh <c-w>h
@@ -449,10 +452,10 @@ nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
 nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nmap <silent> <Space>cd <Plug>(coc-definition)
+nmap <silent> <Space>ct <Plug>(coc-type-definition)
+nmap <silent> <Space>ci <Plug>(coc-implementation)
+nmap <silent> <Space>cr <Plug>(coc-references)
 
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -469,11 +472,11 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+nmap <Space>car <Plug>(coc-rename)
 
 " Remap for format selected region
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+vmap <Space>caf  <Plug>(coc-format-selected)
+nmap <Space>caf  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -488,9 +491,9 @@ vmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
+nmap <Space>cac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
+nmap <Space>caq  <Plug>(coc-fix-current)
 
 " Use `:Format` for format current buffer
 command! -nargs=0 Format :call CocAction('format')
@@ -500,22 +503,24 @@ command! -nargs=? Fold :call   CocAction('fold', <f-args>)
 
 " Using CocList
 " Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>cld  :<C-u>CocList diagnostics<cr>
 " Manage extensions
-nnoremap <silent> <space>ex :<C-u>CocList extensions<cr>
+nnoremap <silent> <space>cle :<C-u>CocList extensions<cr>
 " Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <space>clc  :<C-u>CocList commands<cr>
 " Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> <space>clo  :<C-u>CocList outline<cr>
 " Search workspace symbols
-nnoremap <silent> <space>sy  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <space>cls  :<C-u>CocList -I --auto-preview symbols<cr>
 " Do default action for next item.
 nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 
 " Resume latest coc list
-nnoremap <silent> <space>re  :<C-u>CocListResume<CR>
+nnoremap <silent> <space>clr  :<C-u>CocListResume<CR>
+" CocList
+nnoremap <space>ccc  :CocList 
 
 " NERDTree設定
 let NERDTreeShowHidden = 1
