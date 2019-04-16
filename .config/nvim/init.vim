@@ -146,7 +146,6 @@ nnoremap Y y$
 nnoremap + <c-a>
 nnoremap - <c-x>
 " buffer close
-nnoremap <Space>x :bd<CR>
 nnoremap <Space>qq :bd<CR>
 " ハイライト解除
 nnoremap <Space><Esc> :noh<CR>
@@ -244,6 +243,11 @@ Plug 'chemzqm/denite-git'
 Plug 'Shougo/neoinclude.vim'
 Plug 'jsfaint/coc-neoinclude'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install() } }
+" easymotion
+Plug 'easymotion/vim-easymotion'
+Plug 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch-fuzzy.vim'
+Plug 'haya14busa/incsearch-easymotion.vim'
 
 " 言語系
 Plug 'plasticboy/vim-markdown'
@@ -318,6 +322,38 @@ if executable('rg')
         \ <bang>0)
 endif
 
+" easymotion設定
+map <Space><Space> <Plug>(easymotion-prefix)
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+" nmap s <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap f <Plug>(easymotion-overwin-f2)
+
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+
+" incsearch fuzzy jump
+function! s:config_easyfuzzymotion(...) abort
+  return extend(copy({
+  \   'converters': [incsearch#config#fuzzyword#converter()],
+  \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
+  \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+  \   'is_expr': 0,
+  \   'is_stay': 1
+  \ }), get(a:, 1, {}))
+endfunction
+
+noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+
 " fzf コマンド検索
 nnoremap <Space>fc :Commands<CR>
 " fzf Gitプロジェクト内のファイル検索
@@ -348,6 +384,8 @@ nnoremap <Space>wh <c-w>h
 nnoremap <Space>wj <c-w>j
 nnoremap <Space>wk <c-w>k
 nnoremap <Space>wl <c-w>l
+nnoremap <Space>wx :bd<CR>
+nnoremap <Space>wr :WinResizerStartResize<CR>
 
 " search操作
 nmap n <Plug>(anzu-n-with-echo)
@@ -458,7 +496,7 @@ nmap <silent> <Space>ci <Plug>(coc-implementation)
 nmap <silent> <Space>cr <Plug>(coc-references)
 
 " Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> <Space>csd :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if &filetype == 'vim'
