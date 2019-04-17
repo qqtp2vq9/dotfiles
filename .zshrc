@@ -48,6 +48,7 @@ peco-src() {
 }
 zle -N peco-src
 bindkey '^]' peco-src
+bindkey '^[' peco-src
 
 function peco-branch () {
     local branch=$(git branch -a | peco | tr -d ' ' | tr -d '*')
@@ -68,16 +69,12 @@ bindkey '^x^b' peco-branch # C-x C-b でブランチ選択
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME
 
-export RUBYLIB=$RUBYLIB:$RSPEC_RUBYLIB
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:$PATH:$GOROOT/bin:$GOPATH/bin"
-export PATH=$PATH:$RSPEC_PATH
-export PATH="/Library/Frameworks/Mono.framework/Versions/current/bin:$PATH"
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH:$GOROOT/bin:$GOPATH/bin"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 alias gfp='git fetch --prune'
 alias sv='sudo nvim'
-alias emacs='emacs -nw'
 
 # cdr
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
@@ -110,10 +107,11 @@ function agvim () {
 }
 
 export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/e2fsprogs/bin:$PATH"
 export PATH="/usr/local/opt/e2fsprogs/sbin:$PATH"
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH=$HOME/.nodebrew/current/bin:$PATH
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 export PYTHONPATH="$PYTHONPATH:~/.pyenv/versions/3.6.5/bin/python3.6"
 export LANG=ja_JP.UTF-8
@@ -121,10 +119,17 @@ export LANG=ja_JP.UTF-8
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/usr/local/opt/php@7.1/bin:$PATH"
 
+# mysqlenv
+source ~/.mysqlenv/etc/bashrc
+
 # s.sh
 # https://github.com/ssh0/s.sh
 export BROWSER=/Applications/Firefox.app
 PATH=$HOME/.zsh/plugins/s.sh:$PATH
 fpath=($HOME/.zsh/plugins/s.sh $fpath)
 
-tmux list-sessions
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# Set Spaceship ZSH as a prompt
+autoload -U promptinit; promptinit
+prompt spaceship

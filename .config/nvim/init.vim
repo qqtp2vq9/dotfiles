@@ -49,10 +49,6 @@ set number
 " バックアップファイルを作らない
 set nobackup
 set nowritebackup
-" 現在の行を強調表示 (カーソル移動が重くなる)
-" set cursorline
-" 行末の1文字先までカーソルを移動できるように
-set virtualedit=onemore
 " インデントはスマートインデント
 set smartindent
 " ビープ音を可視化
@@ -277,8 +273,6 @@ call plug#end()
 " 行番号
 autocmd ColorScheme * highlight LineNr ctermfg = 139
 autocmd ColorScheme * highlight Visual ctermbg = lightblue
-set cursorline
-autocmd ColorScheme * highlight CursorLine
 
 " leaderキー変更
 let mapleader = ","
@@ -325,14 +319,6 @@ endif
 " easymotion設定
 map <Space><Space> <Plug>(easymotion-prefix)
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
-
-" Jump to anywhere you want with minimal keystrokes, with just one key binding.
-" `s{char}{label}`
-" nmap s <Plug>(easymotion-overwin-f)
-" or
-" `s{char}{char}{label}`
-" Need one more keystroke, but on average, it may be more comfortable.
-nmap f <Plug>(easymotion-overwin-f2)
 
 " Turn on case insensitive feature
 let g:EasyMotion_smartcase = 1
@@ -447,12 +433,6 @@ let g:vim_markdown_conceal = 0
 
 " Vim
 let g:indentLine_color_term = 239
-
-" Mac vimr用
-if has('gui_vimr')
-    " cursorlineすると遅くなる
-    set nocursorline
-endif
 
 " Better display for messages
 set cmdheight=2
@@ -570,6 +550,10 @@ function s:MoveToFileAtStart()
 endfunction
 autocmd vimenter * NERDTree | call s:MoveToFileAtStart()
 autocmd FileType vue syntax sync fromstart
+
+" Python plugin
+let g:python_host_prog='/usr/local/Cellar/python@2/2.7.16/bin/python'
+let g:python3_host_prog='/usr/local/Cellar/python/3.7.3/bin/python3.7'
 
 command! Filepath echo expand('%:p')
 command! InitVim e ~/.config/nvim/init.vim
