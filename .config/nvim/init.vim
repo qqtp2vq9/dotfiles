@@ -230,6 +230,7 @@ Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-surround'
 " Git操作をVimから。 :Gstatusが便利
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 " multiple cursor
 Plug 'terryma/vim-multiple-cursors'
 " denite
