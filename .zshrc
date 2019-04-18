@@ -116,6 +116,8 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export PYTHONPATH="$PYTHONPATH:~/.pyenv/versions/3.6.5/bin/python3.6"
 export LANG=ja_JP.UTF-8
 
+export MONO_GAC_PREFIX="/usr/local"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/usr/local/opt/php@7.1/bin:$PATH"
 
@@ -128,7 +130,7 @@ export BROWSER=/Applications/Firefox.app
 PATH=$HOME/.zsh/plugins/s.sh:$PATH
 fpath=($HOME/.zsh/plugins/s.sh $fpath)
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:HOME/.cargo/bin:$PATH"
 
 # Set Spaceship ZSH as a prompt
 autoload -U promptinit; promptinit
