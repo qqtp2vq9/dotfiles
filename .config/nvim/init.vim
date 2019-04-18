@@ -268,6 +268,7 @@ Plug 'posva/vim-vue', { 'for': 'vue' }
 Plug 'simeji/winresizer'
 Plug 'osyo-manga/vim-anzu'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'tyru/open-browser.vim'
 
 call plug#end()
 
@@ -340,6 +341,11 @@ function! s:config_easyfuzzymotion(...) abort
 endfunction
 
 noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+
+" open-browser.vim
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
 
 " fzf コマンド検索
 nnoremap <Space>fc :Commands<CR>
