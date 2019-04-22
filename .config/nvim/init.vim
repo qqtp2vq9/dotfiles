@@ -15,6 +15,7 @@ if !has('nvim')
     let info_path = expand('~/.vim/viminfo')
     let undo_path = expand('~/.vim/undo')
 
+
     if !isdirectory(back_path)
         call mkdir(back_path, "p")
     endif
@@ -158,9 +159,11 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'Shougo/denite.nvim'
 Plug 'chemzqm/denite-git'
 " 補完
-Plug 'Valloric/YouCompleteMe'
-" linter
-Plug 'w0rp/ale'
+Plug 'Shougo/neco-vim'
+Plug 'neoclide/coc-neco'
+Plug 'Shougo/neoinclude.vim'
+Plug 'jsfaint/coc-neoinclude'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 " easymotion
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
@@ -234,9 +237,9 @@ nnoremap Y y$
 nnoremap + <c-a>
 nnoremap - <c-x>
 " buffer close
-nnoremap <Space>qq :BD<CR>
+nnoremap <silent><Space>qq :BD<CR>
 " ハイライト解除
-nnoremap <Space><Esc> :noh<CR>
+nnoremap <silent><Space><Esc> :noh<CR>
 " 上下と入れ替えてインデント調整
 nnoremap sj ddp==
 nnoremap sk ddkP==
@@ -279,28 +282,43 @@ nmap <leader>b  :Buffers<CR>
 nmap <leader>f  :Files<CR>
 nmap <leader>h  :History<CR>
 
-nmap <leader>d :<C-u>YcmCompleter GetDoc<CR>
-nmap <leader>g :<C-u>YcmCompleter GoTo<CR>
-nmap <leader>r :<C-u>YcmCompleter GoToReferences<CR>
-nmap <leader>f :<C-u>YcmCompleter Format<CR>
-nmap <leader>i :<C-u>YcmCompleter FixIt<CR>
-nmap <leader>t :<C-u>YcmCompleter GoToType<CR>
+" coc
+set sessionoptions+=globals
+" nmap <silent><leader>d :<C-u>YcmCompleter GetDoc<CR>
+" nmap <leader>g :<C-u>YcmCompleter GoTo<CR>
+" nmap <leader>r :<C-u>YcmCompleter GoToReferences<CR>
+" nmap <leader>a :<C-u>YcmCompleter Format<CR>
+" nmap <leader>i :<C-u>YcmCompleter FixIt<CR>
+" nmap <leader>t :<C-u>YcmCompleter GetType<CR>
+" nmap <silent><leader>c :<C-u>pclose<CR>
+"
+" " ycm
+" let g:ycm_global_ycm_extra_conf = '${HOME}/.ycm_extra_conf.py'
+" let g:ycm_auto_trigger = 1
+" let g:ycm_min_num_of_chars_for_completion = 2
+" let g:ycm_autoclose_preview_window_after_insertion = 1
+" set splitbelow
+" let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_echo_current_diagnostic = 1
+" let g:EclimCompletionMethod = 'omnifunc'
+"
+" augroup Vimrc
+"   autocmd!
+"   autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+"   autocmd BufEnter,BufRead *.vue set filetype=vue.javascript
+" augroup END 
+"
+" autocmd Vimrc FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"
+" let g:ycm_filepath_blacklist = {
+"       \ 'html': 1,
+"       \ 'jsx': 1,
+"       \ 'xml': 1,
+"       \ 'vue': 1,
+"       \}
 
-" ycm
-let g:ycm_global_ycm_extra_conf = '${HOME}/.ycm_extra_conf.py'
-let g:ycm_auto_trigger = 1
-let g:ycm_min_num_of_chars_for_completion = 3
-let g:ycm_autoclose_preview_window_after_insertion = 1
-set splitbelow
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:EclimCompletionMethod = 'omnifunc'
-
-augroup Vimrc
-  autocmd!
-  autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
-augroup END 
-
-autocmd Vimrc FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" multiple cursor
+let g:multi_cursor_start_word_key      = '<leader><C-n>'
 
 " easymotion設定
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
@@ -308,15 +326,26 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Turn on case insensitive feature
 let g:EasyMotion_smartcase = 1
 
-" JK motions: Line motions
+" easymotion
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
+map f <Plug>(easymotion-fl)
+map t <Plug>(easymotion-tl)
+map F <Plug>(easymotion-Fl)
+map T <Plug>(easymotion-Tl)
+
+nmap s <Plug>(easymotion-s2)
+xmap s <Plug>(easymotion-s2)
+" surround.vimと被らないように
+omap z <Plug>(easymotion-s2)
 
 " airline設定
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 nmap <C-p> <Plug>AirlineSelectPrevTab
 nmap <C-n> <Plug>AirlineSelectNextTab
+let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
 " vimdoc-ja ヘルプを日本語優先にする
 set helplang=ja,en
@@ -324,7 +353,8 @@ set helplang=ja,en
 " カラースキーム設定
 silent! colorscheme challenger_deep
 
-" GitGutter styling to use · instead of +/-
+" GitGutter
+set updatetime=250
 nmap <Space>gn :GitGutterNextHunk<CR>
 nmap <Space>gp :GitGutterPrevHunk<CR>
 augroup VimDiff
@@ -342,13 +372,22 @@ highlight TablineSel ctermbg=NONE guibg=NONE
 highlight LineNr ctermbg=NONE guibg=NONE
 highlight CursorLineNr ctermbg=NONE guibg=NONE
 
-" multiple cursor
-let g:multi_cursor_start_word_key      = '<Space><C-n>'
+" fzf
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
 
 " fzf 表示領域
 let g:fzf_layout = { 'down': '~70%' }
-" fzf 選択キー
-let g:fzf_commands_expect = 'enter'
+" [[B]Commits] Customize the options used by 'git log':
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+
+let g:fzf_action = {
+            \ 'ctrl-t': 'edit',
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit'}
 
 " fzf ripgrepによる高速grep
 if executable('rg')
@@ -359,15 +398,6 @@ if executable('rg')
         \ : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
         \ <bang>0)
 endif
-
-" easymotion
-map f <Plug>(easymotion-bd-fl)
-map t <Plug>(easymotion-bd-tl)
-
-nmap s <Plug>(easymotion-s2)
-xmap s <Plug>(easymotion-s2)
-" surround.vimと被らないように
-omap z <Plug>(easymotion-s2)
 
 " incsearch fuzzy jump
 function! s:config_easyfuzzymotion(...) abort
@@ -381,6 +411,7 @@ function! s:config_easyfuzzymotion(...) abort
 endfunction
 
 noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+noremap <silent><expr> <leader>/ incsearch#go(<SID>config_easyfuzzymotion())
 
 " open-browser.vim
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
@@ -397,6 +428,10 @@ nnoremap <Space>fh :History<CR>
 nnoremap <Space>fb :Buffers<CR>
 " fzf カレントディレクトリ以下でgrep検索
 nnoremap <Space>fg :Rg<CR>
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
 
 " NERDTree 現在のファイルを選択した状態でファイラを開く
 nnoremap <Space>nf :NERDTreeFind<CR>
@@ -417,7 +452,7 @@ nnoremap <Space>wh <c-w>h
 nnoremap <Space>wj <c-w>j
 nnoremap <Space>wk <c-w>k
 nnoremap <Space>wl <c-w>l
-nnoremap <Space>wx :BD<CR>
+nnoremap <Space>wq :bd<CR>
 nnoremap <Space>wr :WinResizerStartResize<CR>
 
 " search操作
@@ -505,6 +540,7 @@ function s:MoveToFileAtStart()
 endfunction
 autocmd vimenter * NERDTree | call s:MoveToFileAtStart()
 autocmd FileType vue syntax sync fromstart
+autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
 " Python plugin
 let g:python_host_prog='/usr/local/Cellar/python@2/2.7.16/bin/python'
