@@ -128,12 +128,9 @@ Plug 'vim-jp/vimdoc-ja'
 " カラースキーム
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 " ステータスバーなどの見た目を綺麗にする
-Plug 'vim-airline/vim-airline'
+Plug 'liuchengxu/eleline.vim'
 " サイドバー表示のファイラ
 Plug 'scrooloose/nerdtree'
-" NERDTreeにファイルアイコンをつける
-" Cicaフォントのインストールを推奨 --> https://github.com/miiton/Cica
-Plug 'ryanoasis/vim-devicons'
 " インデント可視化
 Plug 'Yggdroot/indentLine'
 " あいまい検索インターフェース
@@ -152,7 +149,6 @@ Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-surround'
 " Git操作をVimから。 :Gstatusが便利
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
 " multiple cursor
 Plug 'terryma/vim-multiple-cursors'
 " denite
@@ -282,44 +278,6 @@ nmap <leader>b  :Buffers<CR>
 nmap <leader>f  :Files<CR>
 nmap <leader>h  :History<CR>
 
-" coc
-set sessionoptions+=globals
-" nmap <silent><leader>d :<C-u>YcmCompleter GetDoc<CR>
-" nmap <leader>g :<C-u>YcmCompleter GoTo<CR>
-" nmap <leader>r :<C-u>YcmCompleter GoToReferences<CR>
-" nmap <leader>a :<C-u>YcmCompleter Format<CR>
-" nmap <leader>i :<C-u>YcmCompleter FixIt<CR>
-" nmap <leader>t :<C-u>YcmCompleter GetType<CR>
-" nmap <silent><leader>c :<C-u>pclose<CR>
-"
-" " ycm
-" let g:ycm_global_ycm_extra_conf = '${HOME}/.ycm_extra_conf.py'
-" let g:ycm_auto_trigger = 1
-" let g:ycm_min_num_of_chars_for_completion = 2
-" let g:ycm_autoclose_preview_window_after_insertion = 1
-" set splitbelow
-" let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:ycm_echo_current_diagnostic = 1
-" let g:EclimCompletionMethod = 'omnifunc'
-"
-" augroup Vimrc
-"   autocmd!
-"   autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
-"   autocmd BufEnter,BufRead *.vue set filetype=vue.javascript
-" augroup END 
-"
-" autocmd Vimrc FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"
-" let g:ycm_filepath_blacklist = {
-"       \ 'html': 1,
-"       \ 'jsx': 1,
-"       \ 'xml': 1,
-"       \ 'vue': 1,
-"       \}
-
-" multiple cursor
-let g:multi_cursor_start_word_key      = '<leader><C-n>'
-
 " easymotion設定
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
@@ -327,8 +285,8 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 let g:EasyMotion_smartcase = 1
 
 " easymotion
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
+map <leader>j <Plug>(easymotion-j)
+map <leader>k <Plug>(easymotion-k)
 map f <Plug>(easymotion-fl)
 map t <Plug>(easymotion-tl)
 map F <Plug>(easymotion-Fl)
@@ -339,31 +297,11 @@ xmap s <Plug>(easymotion-s2)
 " surround.vimと被らないように
 omap z <Plug>(easymotion-s2)
 
-" airline設定
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-nmap <C-p> <Plug>AirlineSelectPrevTab
-nmap <C-n> <Plug>AirlineSelectNextTab
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
-
 " vimdoc-ja ヘルプを日本語優先にする
 set helplang=ja,en
 
 " カラースキーム設定
 silent! colorscheme challenger_deep
-
-" GitGutter
-set updatetime=250
-nmap <Space>gn :GitGutterNextHunk<CR>
-nmap <Space>gp :GitGutterPrevHunk<CR>
-augroup VimDiff
-  autocmd!
-  autocmd VimEnter,FilterWritePre * if &diff | GitGutterDisable | endif
-augroup END
-nmap <Space>gt :GitGutterToggle<CR>
-nmap <Space>ghs <Plug>GitGutterStageHunk
-nmap <Space>ghr <Plug>GitGutterRevertHunk
 
 " 背景透過
 highlight Normal ctermbg=NONE guibg=NONE
@@ -484,22 +422,6 @@ call denite#custom#map('normal', "o", '<denite:do_action:open>')
 call denite#custom#map('normal', "c", '<denite:do_action:checkout>')
 call denite#custom#map('normal', "r", '<denite:do_action:reset>')
 
-" vim-devicons 諸設定
-let g:webdevicons_conceal_nerdtree_brackets = 1
-let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
-" dir-icons
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-let g:DevIconsEnableFoldersOpenClose = 1
-let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
-let g:DevIconsDefaultFolderOpenSymbol = ''
-" file-icons
-let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
-let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['html'] = ''
-let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['css'] = ''
-let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
-let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['txt'] = ''
-let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = ' '
-
 " vim-rooter
 let g:rooter_change_directory_for_non_project_files = 'current'
 
@@ -516,29 +438,103 @@ let g:vim_markdown_conceal = 0
 " Vim
 let g:indentLine_color_term = 239
 
-" Better display for messages
-set cmdheight=2
-
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
-
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
 
 " always show signcolumns
 set signcolumn=yes
 
+" coc settings
+set sessionoptions+=globals
+
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gt <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>rf  <Plug>(coc-format-selected)
+nmap <leader>rf  <Plug>(coc-format-selected)
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+vmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>y  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR
+
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
 " NERDTree設定
 let NERDTreeShowHidden = 1
-let g:NERDTreeWinPos="right"
-function s:MoveToFileAtStart()
-  call feedkeys("\<Space>")
-  call feedkeys("\w")
-  call feedkeys("\h")
-endfunction
-autocmd vimenter * NERDTree | call s:MoveToFileAtStart()
+
 autocmd FileType vue syntax sync fromstart
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
