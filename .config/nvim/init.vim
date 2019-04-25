@@ -7,34 +7,6 @@ set encoding=utf-8
 set fenc=utf-8
 scriptencoding utf-8
 
-" 自動生成ファイルの出力先指定
-" neovimじゃないとデフォルトで変なところに出力されるのでまとめる
-if !has('nvim')
-    let back_path = expand('~/.vim/backup')
-    let swap_path = expand('~/.vim/swap')
-    let info_path = expand('~/.vim/viminfo')
-    let undo_path = expand('~/.vim/undo')
-
-
-    if !isdirectory(back_path)
-        call mkdir(back_path, "p")
-    endif
-    if !isdirectory(swap_path)
-        call mkdir(swap_path, "p")
-    endif
-    if !isdirectory(info_path)
-        call mkdir(info_path, "p")
-    endif
-    if !isdirectory(undo_path)
-        call mkdir(undo_path, "p")
-    endif
-
-    set backupdir=~/.vim/backup
-    set directory=~/.vim/swap
-    set viminfo+=n~/.vim/viminfo/viminfo.txt
-    set undodir=~/.vin/undo
-endif
-
 " 編集中のファイルが変更されたら自動で読み直す
 set autoread
 " バッファが編集中でもその他のファイルを開けるように
@@ -54,8 +26,6 @@ set nowritebackup
 set smartindent
 " ビープ音を可視化
 set visualbell
-" 括弧入力時の対応する括弧を表示
-set showmatch
 " ステータスラインを常に表示
 set laststatus=2
 " コマンドラインの補完
@@ -95,6 +65,10 @@ set clipboard+=unnamedplus
 set nofoldenable
 " スクロールに行数の余裕をもたせる
 set scrolloff=7
+" １行表示させる
+set display=lastline
+" 水平分割は下に作成する
+set splitbelow
 
 " ===============================================================
 " Plugins
@@ -131,35 +105,25 @@ Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 Plug 'liuchengxu/eleline.vim'
 " サイドバー表示のファイラ
 Plug 'scrooloose/nerdtree'
-" インデント可視化
-Plug 'Yggdroot/indentLine'
 " あいまい検索インターフェース
 " ファイル検索やgrepでよく使う
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-" コメントアウトのトグル <Ctrl--> か <Ctrl-_> で使える
-Plug 'tomtom/tcomment_vim'
-" 記号とかで列を揃える
-Plug 'junegunn/vim-easy-align'
-" 対応するカッコやクォーテーションを自動で入力してくれる
-Plug 'kana/vim-smartinput'
-" カレントディレクトリを自動で変えてくれる
-Plug 'airblade/vim-rooter'
-" テキストを囲うものを編集しやすくする (カッコやタグなど)
+" 整形系
+Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
-" Git操作をVimから。 :Gstatusが便利
+Plug 'tomtom/tcomment_vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'kana/vim-smartinput'
+Plug 'itchyny/vim-parenmatch'
+" Git
 Plug 'tpope/vim-fugitive'
-" multiple cursor
-Plug 'terryma/vim-multiple-cursors'
+Plug 'sgur/vim-gitgutter'
 " denite
 Plug 'Shougo/denite.nvim'
 Plug 'chemzqm/denite-git'
 " 補完
-Plug 'Shougo/neco-vim'
-Plug 'neoclide/coc-neco'
-Plug 'Shougo/neoinclude.vim'
-Plug 'jsfaint/coc-neoinclude'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 " easymotion
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch.vim'
@@ -176,13 +140,20 @@ Plug 'prettier/vim-prettier', {
 Plug 'sheerun/vim-polyglot'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 
+" tag系
+Plug 'liuchengxu/vista.vim'
+
 " その他
+Plug 'terryma/vim-multiple-cursors'
+Plug 'airblade/vim-rooter'
 Plug 'simeji/winresizer'
 Plug 'osyo-manga/vim-anzu'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'tyru/open-browser.vim'
 Plug 'qpkorr/vim-bufkill'
 Plug 'tpope/vim-repeat'
+Plug 'thinca/vim-quickrun'
+Plug 't9md/vim-choosewin'
 
 call plug#end()
 
@@ -278,6 +249,39 @@ nmap <leader>b  :Buffers<CR>
 nmap <leader>f  :Files<CR>
 nmap <leader>h  :History<CR>
 
+" quickrun設定
+let g:quickrun_config = get(g:, 'quickrun_config', {})
+let g:quickrun_config._ = {
+      \ 'runner'    : 'vimproc',
+      \ 'runner/vimproc/updatetime' : 60,
+      \ 'outputter' : 'error',
+      \ 'outputter/error/success' : 'buffer',
+      \ 'outputter/error/error'   : 'quickfix',
+      \ 'outputter/buffer/vsplit'  : ':rightbelow 4sp',
+      \ 'outputter/buffer/close_on_empty' : 1,
+      \ }
+
+nmap <silent><leader>d :QuickRun<CR>
+nmap <silent><leader>dn  :QuickRun node<CR>
+nmap <leader>da :QuickRun
+
+autocmd FileType qf nnoremap <silent><buffer>q :quit<CR>
+
+" gitgutter
+nmap <silent><leader>gn :GitGutterNextHunk<CR>
+nmap <silent><leader>gp :GitGutterPrevHunk<CR>
+nmap <silent><leader>gt :GitGutterToggle<CR>
+nmap <silent><leader>gs <Plug>GitGutterStageHunk
+nmap <silent><leader>gr <Plug>GitGutterRevertHunk
+
+"eleline
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+set statusline+=%{NearestMethodOrFunction()}
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
 " easymotion設定
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
@@ -285,23 +289,28 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 let g:EasyMotion_smartcase = 1
 
 " easymotion
-map <leader>j <Plug>(easymotion-j)
-map <leader>k <Plug>(easymotion-k)
-map f <Plug>(easymotion-fl)
-map t <Plug>(easymotion-tl)
-map F <Plug>(easymotion-Fl)
-map T <Plug>(easymotion-Tl)
+map <silent> <leader>j <Plug>(easymotion-j)
+map <silent> <leader>k <Plug>(easymotion-k)
+map <silent> f <Plug>(easymotion-fl)
+map <silent> t <Plug>(easymotion-tl)
+map <silent> F <Plug>(easymotion-Fl)
+map <silent> T <Plug>(easymotion-Tl)
 
-nmap s <Plug>(easymotion-s2)
-xmap s <Plug>(easymotion-s2)
 " surround.vimと被らないように
-omap z <Plug>(easymotion-s2)
+nmap <silent> <leader>s <Plug>(easymotion-s2)
+xmap <silent> <leader>s <Plug>(easymotion-s2)
+omap <silent> <leader>s <Plug>(easymotion-s2)
+
+" choosewin
+nmap <silent><leader>c <Plug>(choosewin)
 
 " vimdoc-ja ヘルプを日本語優先にする
 set helplang=ja,en
 
 " カラースキーム設定
 silent! colorscheme challenger_deep
+highlight link ParenMatch MatchParen
+let g:parenmatch_highlight = 0
 
 " 背景透過
 highlight Normal ctermbg=NONE guibg=NONE
@@ -318,9 +327,6 @@ let g:fzf_buffers_jump = 1
 let g:fzf_layout = { 'down': '~70%' }
 " [[B]Commits] Customize the options used by 'git log':
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-
-" [Tags] Command to generate tags file
-let g:fzf_tags_command = 'ctags -R'
 
 let g:fzf_action = {
             \ 'ctrl-t': 'edit',
@@ -372,9 +378,9 @@ xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
 " NERDTree 現在のファイルを選択した状態でファイラを開く
-nnoremap <Space>nf :NERDTreeFind<CR>
+nnoremap <silent> <Space>nf :NERDTreeFind<CR>
 " NERDTree ファイラの表示切り替え
-nnoremap <Space>nt :NERDTreeToggle<CR>
+nnoremap <silent> <Space>nt :NERDTreeToggle<CR>
 
 " fugitive & Denite git status
 nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
@@ -443,6 +449,13 @@ set shortmess+=c
 
 " always show signcolumns
 set signcolumn=yes
+
+" vista設定
+nmap <silent><space>tt :Vista!!<CR>
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'coc'
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 0
 
 " coc settings
 set sessionoptions+=globals
