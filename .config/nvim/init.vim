@@ -408,7 +408,8 @@ nmap # <Plug>(anzu-sharp)
 
 " toggle
 nmap <silent> <Space>tf :NERDTreeToggle<CR>
-nmap <silent><space>tt :Vista!!<CR>
+nmap <silent><Space>tt :Vista!!<CR>
+nmap <silent><Space>tg :GitGutterToggle<CR>
 
 " denite
 " denite/insert モードのときは，C- で移動できるようにする
