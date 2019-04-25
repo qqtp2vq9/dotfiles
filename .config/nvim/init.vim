@@ -279,7 +279,7 @@ nmap <silent><leader>gt :GitGutterToggle<CR>
 nmap <silent><leader>gs <Plug>GitGutterStageHunk
 nmap <silent><leader>gr <Plug>GitGutterRevertHunk
 
-nnoremap tig :<C-u>w<CR>:te tig<CR>
+nnoremap tig :te tig<CR>i
 
 "eleline
 function! NearestMethodOrFunction() abort
