@@ -1,0 +1,194 @@
+
+# tap repositories and their packages
+
+tap homebrew/core
+brew apr
+brew apr-util
+brew aspell
+brew autoconf
+brew automake
+brew bash
+brew bdw-gc
+brew boost
+brew brew-gem
+brew brotli
+brew c-ares
+brew cairo
+brew cassandra
+brew ccm
+brew cmake
+brew composer
+brew coreutils
+brew cscope
+brew csshx
+brew curl-openssl
+brew cython
+brew czmq
+brew e2fsprogs
+brew fontconfig
+brew fontforge
+brew freetds
+brew freetype
+brew fribidi
+brew fzf
+brew gd
+brew gdbm
+brew gdk-pixbuf
+brew gettext
+brew ghq
+brew giflib
+brew glib
+brew glide
+brew gmp
+brew gnutls
+brew go
+brew gobject-introspection
+brew goenv
+brew gradle
+brew graphite2
+brew graphviz
+brew harfbuzz
+brew httpd
+brew icu4c
+brew ilmbase
+brew imagemagick
+brew imagemagick@6
+brew jansson
+brew jemalloc
+brew jenv
+brew jpeg
+brew jq
+brew kotlin
+brew ktlint
+brew libcroco
+brew libde265
+brew libev
+brew libevent
+brew libffi
+brew libheif
+brew libiconv
+brew libidn
+brew libidn2
+brew libmetalink
+brew libomp
+brew libpng
+brew libpq
+brew librsvg
+brew libsodium
+brew libspiro
+brew libssh2
+brew libtasn1
+brew libtermkey
+brew libtiff
+brew libtool
+brew libuninameslist
+brew libunistring
+brew libuv
+brew libvterm
+brew libxml2
+brew libyaml
+brew libzip
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew lynx
+brew mas
+brew maven
+brew mcrypt
+brew md5sha1sum
+brew mhash
+brew mono
+brew msgpack
+brew ncurses
+brew neovim --HEAD
+brew nettle
+brew nghttp2
+brew nkf
+brew oniguruma
+brew openexr
+brew openjpeg
+brew openldap
+brew openssl
+brew openssl@1.1
+brew p11-kit
+brew pandoc
+brew pango
+brew pcre
+brew pcre2
+brew peco
+brew perl
+brew php-code-sniffer
+brew php@7.1
+brew pixman
+brew pkg-config
+brew privoxy
+brew python
+brew python@2
+brew q
+brew readline
+brew reattach-to-user-namespace
+brew redis
+brew ripgrep
+brew rtmpdump
+brew ruby
+brew rxvt-unicode
+brew shared-mime-info
+brew sqlite
+brew telnet
+brew the_silver_searcher
+brew tidy-html5
+brew tig
+brew tmux
+brew unbound
+brew unibilium
+brew unixodbc
+brew vim
+brew w3m
+brew webp
+brew wget
+brew x265
+brew xz
+brew z
+brew zeromq
+brew zlib
+brew zplug
+brew zsh
+brew zsh-syntax-highlighting
+
+tap homebrew/brewdler
+
+tap homebrew/bundle
+
+tap homebrew/cask-fonts
+cask font-hack-nerd-font
+
+tap homebrew/cask-versions
+
+tap homebrew/services
+
+tap homebrew/cask
+cask atom
+cask karabiner-elements
+
+tap cloudfoundry/tap
+brew cf-cli
+
+tap neovim/neovim
+
+tap pivotal/tap
+brew springboot
+
+tap rcmdnk/file
+brew brew-file
+
+tap shyiko/ktlint
+
+# Other Cask applications
+cask docker
+cask font-source-code-pro
+
+# App Store applications
+appstore 497799835 com.apple.dt.Xcode (10.2.1)
+appstore 803453959 com.tinyspeck.slackmacgap (3.4.0)

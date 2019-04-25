@@ -236,6 +236,13 @@ vnoremap <S-Down> "zx"zp`[V`]
 imap <C-h> <BS>
 inoremap <C-t> <Esc><Left>"zx"zpa
 
+" terminal
+if has('nvim')
+  autocmd WinEnter * if &buftype ==# 'terminal' | startinsert | endif
+else
+  autocmd WinEnter * if &buftype ==# 'terminal' | normal i | endif
+endif
+
 " 行番号
 autocmd ColorScheme * highlight LineNr ctermfg = 139
 autocmd ColorScheme * highlight Visual ctermbg = lightblue
@@ -267,12 +274,14 @@ nmap <leader>da :QuickRun
 
 autocmd FileType qf nnoremap <silent><buffer>q :quit<CR>
 
-" gitgutter
+" git
 nmap <silent><leader>gn :GitGutterNextHunk<CR>
 nmap <silent><leader>gp :GitGutterPrevHunk<CR>
 nmap <silent><leader>gt :GitGutterToggle<CR>
 nmap <silent><leader>gs <Plug>GitGutterStageHunk
 nmap <silent><leader>gr <Plug>GitGutterRevertHunk
+
+nnoremap tig :<C-u>w<CR>:te tig<CR>
 
 "eleline
 function! NearestMethodOrFunction() abort

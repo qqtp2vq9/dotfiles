@@ -1,0 +1,7 @@
+bind generic G none
+bind status C !git commit -v 
+bind status R ?git checkout %(file)
+bind main c ?git checkout %(commit)
+bind generic 9 !@sh -c "echo %(commit) | pbcopy"
+bind main    R !git rebase -i %(commit)
+bind diff    R !git rebase -i %(commit)
