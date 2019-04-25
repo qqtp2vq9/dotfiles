@@ -117,11 +117,9 @@ Plug 'junegunn/vim-easy-align'
 Plug 'kana/vim-smartinput'
 Plug 'itchyny/vim-parenmatch'
 " Git
-Plug 'tpope/vim-fugitive'
 Plug 'sgur/vim-gitgutter'
 " denite
 Plug 'Shougo/denite.nvim'
-Plug 'chemzqm/denite-git'
 " 補完
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 " easymotion
@@ -310,9 +308,6 @@ nmap <silent> <leader>s <Plug>(easymotion-s2)
 xmap <silent> <leader>s <Plug>(easymotion-s2)
 omap <silent> <leader>s <Plug>(easymotion-s2)
 
-" choosewin
-nmap <silent><leader>c <Plug>(choosewin)
-
 " vimdoc-ja ヘルプを日本語優先にする
 set helplang=ja,en
 
@@ -391,10 +386,6 @@ nnoremap <silent> <Space>nf :NERDTreeFind<CR>
 " NERDTree ファイラの表示切り替え
 nnoremap <silent> <Space>nt :NERDTreeToggle<CR>
 
-" fugitive & Denite git status
-nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
-nnoremap <Space>ds :Denite gitstatus<CR>
-
 " Denite
 nnoremap <Space>d :Denite
 nnoremap <Space>db :Denite buffer<CR>
@@ -407,12 +398,17 @@ nnoremap <Space>wk <c-w>k
 nnoremap <Space>wl <c-w>l
 nnoremap <Space>wq :bd<CR>
 nnoremap <Space>wr :WinResizerStartResize<CR>
+nmap <silent><Space>wc <Plug>(choosewin)
 
 " search操作
 nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
 nmap * <Plug>(anzu-star)
 nmap # <Plug>(anzu-sharp)
+
+" toggle
+nmap <silent> <Space>tf :NERDTreeToggle<CR>
+nmap <silent><space>tt :Vista!!<CR>
 
 " denite
 " denite/insert モードのときは，C- で移動できるようにする
@@ -460,7 +456,6 @@ set shortmess+=c
 set signcolumn=yes
 
 " vista設定
-nmap <silent><space>tt :Vista!!<CR>
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_default_executive = 'coc'
 let g:vista_fzf_preview = ['right:50%']
