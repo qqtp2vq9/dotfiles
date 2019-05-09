@@ -132,6 +132,9 @@ fpath=($HOME/.zsh/plugins/s.sh $fpath)
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:HOME/.cargo/bin:$PATH"
 
+# homebrew
+alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
+
 # Set Spaceship ZSH as a prompt
 autoload -U promptinit; promptinit
 prompt spaceship

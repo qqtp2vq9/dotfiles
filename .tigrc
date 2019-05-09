@@ -1,11 +1,78 @@
-bind generic G none
-bind status C !git commit -v 
-bind status R ?git checkout %(file)
-bind main c ?git checkout %(commit)
-bind generic 9 !@sh -c "echo %(commit) | pbcopy"
-bind main    R !git rebase -i %(commit)
-bind diff    R !git rebase -i %(commit)
+## move
+# g をファイル先頭に移動に変更、 view-grep を再割当て
+bind generic g      move-first-line
+bind generic E      view-grep
 
+# G でファイル末尾に移動 (default: :toggle commit-title-graph)
+bind generic G      move-last-line
+bind main    G      move-last-line
+
+# Alt-g で :toggle commit-title-graph
+bind main    <Esc>g :toggle commit-title-graph<Paste>
+
+# n / p を上下移動に割り当て (default: find-next / view-pager)
+bind generic n      move-down
+bind generic p      move-up
+
+# n / p で単位ごとの移動
+bind diff    n      :/^@@
+bind diff    p      :?^@@
+bind diff    <Esc>n :/^diff --(git|cc)
+bind diff    <Esc>p :?^diff --(git|cc)
+bind stage   n      :/^@@
+bind stage   p      :?^@@
+bind stage   <Esc>n :/^diff --(git|cc)
+bind stage   <Esc>p :?^diff --(git|cc)
+bind pager   n      :/^@@
+bind pager   p      :?^@@
+bind pager   <Esc>n :/^diff --(git|cc)
+bind pager   <Esc>p :?^diff --(git|cc)
+bind log     n      :/^commit
+bind log     p      :?^commit<Plug>CocRefresh
+
+## commit
+# C で commit (refs での C は checkout, main での C は cherry-pick だが上書きする)
+bind generic C      !git commit
+bind refs    C      !git commit
+bind main    C      !git commit
+
+# Alt-c で commit --allow-empty
+bind generic <Esc>c !git commit --allow-empty
+
+# + で commit --amend
+bind generic +      !git commit --amend --allow-empty
+
+## commitID Copy
+# ` で commit ID をクリップボードにコピー (Mac用)
+bind generic `      @bash -c "echo -n '%(commit)' | pbcopy"
+
+# ` でファイルパスをクリップボードにコピー (Mac用)
+bind stage   `      @bash -c "echo -n '%(file)' | pbcopy"
+bind status  `      @bash -c "echo -n '%(file)' | pbcopy"
+bind tree    `      @bash -c "echo -n '%(file)' | pbcopy"
+bind blob    `      @bash -c "echo -n '%(file)' | pbcopy"
+
+## 以下、Shift付きでブランチ指定、Alt付きでコミットID指定のコマンド
+# = で checkout
+bind main    =      ?git checkout %(branch)
+bind refs    =      ?git checkout %(branch)
+bind main    <Esc>= ?git checkout %(commit)
+
+# ! で revert
+bind main    !      ?git revert %(commit)
+
+# - で直前のブランチに戻る (checkout -)
+bind generic -      ?git checkout -
+
+# K で cherry-pick (default: 'C')
+bind main    K      ?git cherry-pick %(commit)
+bind diff    K      ?git cherry-pick %(commit)
+
+# Alt-k で cherry-pick -n (--no-commit)
+bind main    <Esc>k ?git cherry-pick -n %(commit)
+bind diff    <Esc>k ?git cherry-pick -n %(commit)
+
+## fetch / pull / push
 # F で fetch (default: :toggle file-name / :toggle commit-title-refs)
 bind generic F      ?git fetch %(remote)
 bind main    F      ?git fetch %(remote)
@@ -24,3 +91,94 @@ bind refs    <Esc>u ?sh -c "git checkout %(branch) && git pull %(remote) --ff-on
 
 # P で remote への push
 bind generic P      ?git push -u %(remote) %(repo:head)
+
+## delete
+# D でブランチを削除 (マージ済みブランチのみ. 強制削除(branch -D) は `!`) (refs-view)
+bind refs    D      ?git branch -d %(branch)
+
+# D でトラッキングされていないファイルを削除 (status-view)
+bind status  D      ?git clean -d -f -- %(file)
+
+# D で stash を削除 (`!` と同じ) (stash-view)
+bind stash   D      ?git stash drop %(stash)
+
+# D でファイルを削除 (tree-view)
+bind tree    D      ?git rm %(file)
+
+# x でトラッキングされていないファイルをすべて削除
+bind main    x      ?git clean -d -f
+bind status  x      ?git clean -d -f
+
+# x でマージ済みローカルブランチをすべて削除 (master/develop 除く)
+bind refs    x      ?sh -c "git branch --merged | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -d %"
+
+## reset
+# H で reset --hard
+bind main    H      ?git reset --hard %(commit)
+bind diff    H      ?git reset --hard %(commit)
+bind refs    H      ?git reset --hard %(branch)
+
+# H で reset --hard HEAD (status-view)
+bind status  H      ?git reset --hard HEAD
+
+# ^ で reset --soft
+bind generic ^      ?git reset --soft HEAD^
+
+## stash
+# S で stash save
+bind generic S      ?git stash save "%(prompt Enter stash comment: )"
+
+# Y で stash pop
+bind diff    Y      ?git stash pop %(stash)
+bind stash   Y      ?git stash pop %(stash)
+
+# Alt-y で stash apply
+bind diff    <Esc>y ?git stash apply %(stash)
+bind stash   <Esc>y ?git stash apply %(stash)
+
+## diff
+# . で HEAD との diff
+bind main    .      !sh -c "git diff %(commit) | tig"
+bind diff    .      !sh -c "git diff %(commit) | tig"
+bind refs    .      !sh -c "git diff %(branch) | tig"
+
+# Alt-. で指定 commit ID との diff
+bind main    <Esc>. ?sh -c "git diff %(commit)..%(prompt Enter commit ID: ) | tig"
+bind diff    <Esc>. ?sh -c "git diff %(commit)..%(prompt Enter commit ID: ) | tig"
+bind refs    <Esc>. ?sh -c "git diff %(branch)..%(prompt Enter branch name: ) | tig"
+
+# ~ で親コミットに移動 (default: :toggle line-graphics)
+bind generic ~      :goto %(commit)^
+
+# Alt-~ で表示のトグル (default: ~)
+bind generic <Esc>~ :toggle line-graphics
+
+## reflog
+# L で reflog
+bind generic L      !sh -c "git reflog --pretty=raw | tig --pretty=raw"
+
+# _ で指定 reflog 番号にリセット
+bind generic _      ?git reset --hard HEAD@{"%(prompt Enter HEAD@{} number: )"}
+
+## merge/rebase
+# M で merge
+bind main    M      ?git merge %(branch)
+bind diff    M      ?git merge %(branch)
+bind refs    M      ?git merge %(branch)
+bind main    <Esc>m ?git merge %(commit)
+bind diff    <Esc>m ?git merge %(commit)
+
+# R で rebase
+bind main    R      ?git rebase %(branch)
+bind diff    R      ?git rebase %(branch)
+bind refs    R      ?git rebase %(branch)
+bind main    <Esc>r ?git rebase %(commit)
+bind diff    <Esc>r ?git rebase %(commit)
+
+# I で rebase -i
+bind main    I      ?git rebase -i %(branch)
+bind diff    I      ?git rebase -i %(branch)
+bind refs    I      ?git rebase -i %(branch)
+bind main    <Esc>i ?git rebase -i %(commit)
+bind diff    <Esc>i ?git rebase -i %(commit)
+
