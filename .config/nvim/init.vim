@@ -302,11 +302,8 @@ map <silent> f <Plug>(easymotion-fl)
 map <silent> t <Plug>(easymotion-tl)
 map <silent> F <Plug>(easymotion-Fl)
 map <silent> T <Plug>(easymotion-Tl)
-
-" surround.vimと被らないように
-nmap <silent> <leader>s <Plug>(easymotion-s2)
-xmap <silent> <leader>s <Plug>(easymotion-s2)
-omap <silent> <leader>s <Plug>(easymotion-s2)
+nmap <silent> s <Plug>(easymotion-s2)
+map <silent> <leader>s <Plug>(easymotion-s2)
 
 " vimdoc-ja ヘルプを日本語優先にする
 set helplang=ja,en

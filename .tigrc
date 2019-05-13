@@ -39,6 +39,22 @@ set editor-line-number = yes
 # リフレッシュするタイミング
 set refresh-mode = auto
 
+# 元の n / p を別に割り当て
+bind generic V      view-pager
+bind generic <Ctrl-s> find-next # 要 stty stop undef
+bind generic <Ctrl-r> find-prev
+
+# Ctrl-v, Alt-v でページ単位移動 (ターミナルに食われるので Ctrl-v は2度押しが必要)
+bind generic <Ctrl-v> move-page-down
+bind generic <Esc>v move-page-up
+
+# Ctrl-f, Ctrl-b で左右スクロール
+bind generic <Ctrl-f> scroll-right
+bind generic <Ctrl-b> scroll-left
+
+# Ctrl-g でリフレッシュ
+bind generic <Ctrl-g> refresh
+
 ## move
 # g をファイル先頭に移動に変更、 view-grep を再割当て
 bind generic g      move-first-line
@@ -98,6 +114,7 @@ bind blob    `      @bash -c "echo -n '%(file)' | pbcopy"
 bind main    =      ?git checkout %(branch)
 bind refs    =      ?git checkout %(branch)
 bind main    <Esc>= ?git checkout %(commit)
+bind status  =      ?git checkout %(file)
 
 # ! で revert
 bind main    !      ?git revert %(commit)
@@ -158,6 +175,7 @@ bind refs    x      ?sh -c "git branch --merged | grep -vE '^\\*|master$|develop
 bind main    H      ?git reset --hard %(commit)
 bind diff    H      ?git reset --hard %(commit)
 bind refs    H      ?git reset --hard %(branch)
+bind status  H      ?git reset --hard %(file)
 
 # H で reset --hard HEAD (status-view)
 bind status  H      ?git reset --hard HEAD
