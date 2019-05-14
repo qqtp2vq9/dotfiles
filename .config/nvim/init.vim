@@ -557,5 +557,8 @@ autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 let g:python_host_prog='/usr/local/Cellar/python@2/2.7.16/bin/python'
 let g:python3_host_prog='/usr/local/Cellar/python/3.7.3/bin/python3.7'
 
+nmap <silent> <c-[> {
+nmap <silent> <c-]> }
+
 command! Filepath echo expand('%:p')
 command! InitVim e ~/.config/nvim/init.vim
