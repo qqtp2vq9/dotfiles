@@ -192,6 +192,8 @@ noremap! <c-b> <left>
 noremap! <c-a> <home>
 noremap! <c-e> <end>
 noremap! <c-d> <del>
+nmap <silent> <c-[> {
+nmap <silent> <c-]> }
 
 " ---------------------------------------------------------------
 " ノーマルモードでのキーマッピング
@@ -201,8 +203,6 @@ nnoremap Y y$
 " インクリメント＆デクリメント
 nnoremap + <c-a>
 nnoremap - <c-x>
-" buffer close
-nnoremap <silent><Space>qq :BD<CR>
 " ハイライト解除
 nnoremap <silent><Space><Esc> :noh<CR>
 " 上下と入れ替えてインデント調整
@@ -393,9 +393,12 @@ nnoremap <Space>wh <c-w>h
 nnoremap <Space>wj <c-w>j
 nnoremap <Space>wk <c-w>k
 nnoremap <Space>wl <c-w>l
-nnoremap <Space>wq :bd<CR>
+nnoremap <Space>wx :bd<CR>
+nnoremap <silent><Space>wq :BD<CR>
 nnoremap <Space>wr :WinResizerStartResize<CR>
 nmap <silent><Space>wc <Plug>(choosewin)
+nmap <silent> <space>w- :split +enew<CR>
+nmap <silent> <space>w<Bar> :vsplit +enew<CR>
 
 " search操作
 nmap n <Plug>(anzu-n-with-echo)
@@ -540,7 +543,7 @@ nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
 nnoremap <silent> <space>y  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 
 " Do default action for previous item.
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
@@ -556,9 +559,6 @@ autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 " Python plugin
 let g:python_host_prog='/usr/local/Cellar/python@2/2.7.16/bin/python'
 let g:python3_host_prog='/usr/local/Cellar/python/3.7.3/bin/python3.7'
-
-nmap <silent> <c-[> {
-nmap <silent> <c-]> }
 
 command! Filepath echo expand('%:p')
 command! InitVim e ~/.config/nvim/init.vim
