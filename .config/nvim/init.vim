@@ -168,14 +168,11 @@ autocmd FileType * setlocal formatoptions-=ro
 "================================================================
 " カーソル形状
 "================================================================
-
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-
 
 "================================================================
 " キーマップ
 "================================================================
-
 " ---------------------------------------------------------------
 " ノーマルモード & ビジュアルモードでのキーマッピング
 
@@ -185,19 +182,15 @@ noremap gQ <Nop>
 
 " ---------------------------------------------------------------
 " コマンドモード & 挿入モードでのキーマッピング
-
 " カーソル移動系
 noremap! <c-f> <right>
 noremap! <c-b> <left>
 noremap! <c-a> <home>
 noremap! <c-e> <end>
 noremap! <c-d> <del>
-nmap <silent> <c-[> {
-nmap <silent> <c-]> }
 
 " ---------------------------------------------------------------
 " ノーマルモードでのキーマッピング
-
 " 行末までコピー
 nnoremap Y y$
 " インクリメント＆デクリメント
@@ -209,6 +202,8 @@ nnoremap <silent><Space><Esc> :noh<CR>
 nnoremap sj ddp==
 nnoremap sk ddkP==
 
+nmap <silent> <c-[> {
+nmap <silent> <c-]> }
 " ---------------------------------------------------------------
 " コマンドモードでのキーマッピング
 cnoremap <c-p> <up>
@@ -223,13 +218,6 @@ inoremap jk <Esc>
 inoremap kj <Esc><Right>
 inoremap <C-]> <Esc><Right>
 
-" 行を移動
-nnoremap <S-Up> "zdd<Up>"zP
-nnoremap <S-Down> "zdd"zp
-" 複数行を移動
-vnoremap <S-Up> "zx<Up>"zP`[V`]
-vnoremap <S-Down> "zx"zp`[V`]
-
 " その他のキーマッピング
 imap <C-h> <BS>
 inoremap <C-t> <Esc><Left>"zx"zpa
@@ -240,6 +228,7 @@ if has('nvim')
 else
   autocmd WinEnter * if &buftype ==# 'terminal' | normal i | endif
 endif
+tnoremap <silent> <ESC> <C-\><C-n>
 
 " 行番号
 autocmd ColorScheme * highlight LineNr ctermfg = 139
@@ -270,6 +259,7 @@ nmap <silent><leader>d :QuickRun<CR>
 nmap <silent><leader>dn  :QuickRun node<CR>
 nmap <leader>da :QuickRun
 
+" quickfix
 autocmd FileType qf nnoremap <silent><buffer>q :quit<CR>
 
 " git
@@ -278,9 +268,7 @@ nmap <silent><leader>gp :GitGutterPrevHunk<CR>
 nmap <silent><leader>gt :GitGutterToggle<CR>
 nmap <silent><leader>gs <Plug>GitGutterStageHunk
 nmap <silent><leader>gr <Plug>GitGutterRevertHunk
-
 nnoremap tig :te tig<CR>i
-tnoremap <silent> <ESC> <C-\><C-n>
 
 "eleline
 function! NearestMethodOrFunction() abort
