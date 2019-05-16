@@ -64,7 +64,7 @@ set clipboard+=unnamedplus
 " 畳み込み禁止
 set nofoldenable
 " スクロールに行数の余裕をもたせる
-set scrolloff=7
+set scrolloff=3
 " １行表示させる
 set display=lastline
 " 水平分割は下に作成する
@@ -280,6 +280,7 @@ nmap <silent><leader>gs <Plug>GitGutterStageHunk
 nmap <silent><leader>gr <Plug>GitGutterRevertHunk
 
 nnoremap tig :te tig<CR>i
+tnoremap <silent> <ESC> <C-\><C-n>
 
 "eleline
 function! NearestMethodOrFunction() abort
