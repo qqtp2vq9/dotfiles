@@ -228,7 +228,6 @@ if has('nvim')
 else
   autocmd WinEnter * if &buftype ==# 'terminal' | normal i | endif
 endif
-tnoremap <silent> <ESC> <C-\><C-n>
 
 " 行番号
 autocmd ColorScheme * highlight LineNr ctermfg = 139

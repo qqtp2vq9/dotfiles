@@ -240,3 +240,6 @@ bind diff    I      ?git rebase -i %(branch)
 bind refs    I      ?git rebase -i %(branch)
 bind main    <Esc>i ?git rebase -i %(commit)
 bind diff    <Esc>i ?git rebase -i %(commit)
+
+# diff highlight
+set diff-highlight = true
