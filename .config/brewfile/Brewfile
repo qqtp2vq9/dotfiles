@@ -1,4 +1,3 @@
-
 # tap repositories and their packages
 
 tap homebrew/core
@@ -37,6 +36,7 @@ brew gdk-pixbuf
 brew gettext
 brew ghq
 brew giflib
+brew git
 brew glib
 brew glide
 brew gmp
@@ -159,8 +159,6 @@ brew zsh-syntax-highlighting
 
 tap homebrew/brewdler
 
-tap homebrew/bundle
-
 tap homebrew/cask-fonts
 cask font-hack-nerd-font
 
@@ -170,10 +168,14 @@ tap homebrew/services
 
 tap homebrew/cask
 cask atom
+cask intellij-idea-ce
 cask karabiner-elements
+cask xquartz
 
 tap cloudfoundry/tap
 brew cf-cli
+
+tap d12frosted/emacs-plus
 
 tap neovim/neovim
 
@@ -183,11 +185,25 @@ brew springboot
 tap rcmdnk/file
 brew brew-file
 
+tap sanemat/font
+brew ricty --with-powerline
+
 tap shyiko/ktlint
+
+tap theseal/ssh-askpass
+brew ssh-askpass
+
+tap universal-ctags/universal-ctags
+brew universal-ctags --with-jansson --HEAD
 
 # Other Cask applications
 cask docker
 cask font-source-code-pro
+cask java
+cask java8
+cask java9
+cask qutebrowser
+cask sts
 
 # App Store applications
 appstore 497799835 com.apple.dt.Xcode (10.2.1)
