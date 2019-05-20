@@ -1,0 +1,26 @@
+[push]
+	default = simple
+[ghq]
+	root = ~/src
+[init]
+	templatedir = ~/.git_tmp
+[core]
+	excludesfile = ~/.gitignore_global
+	autocrlf = input
+	editor = nvim
+[commit]
+	template = ~/.gitmessage.txt
+    cleanup = strip
+
+[url "https://"]
+        insteadOf = git://
+[alias]
+	conflicted = !vim +Conflicted
+[pager]
+	log = diff-highlight | less
+	show = diff-highlight | less
+	diff = diff-highlight | less
+[interactive]
+	diffFilter = diff-highlight
+[diff]
+	compactionHeuristic = true
