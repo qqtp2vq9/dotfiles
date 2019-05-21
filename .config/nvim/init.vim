@@ -155,6 +155,9 @@ Plug 't9md/vim-choosewin'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'kana/vim-operator-user'
 Plug 'kana/vim-operator-replace'
+Plug 'kana/vim-textobj-user'
+Plug 'h1mesuke/textobj-wiw'
+Plug 'osyo-manga/vim-textobj-context'
 
 call plug#end()
 
@@ -237,6 +240,10 @@ endif
 " 行番号
 autocmd ColorScheme * highlight LineNr ctermfg = 139
 autocmd ColorScheme * highlight Visual ctermbg = lightblue
+
+" motion_scroll
+let g:comfortable_motion_scroll_down_key = "j"
+let g:comfortable_motion_scroll_up_key = "k"
 
 " leaderキー変更
 let mapleader = ";"
