@@ -152,6 +152,9 @@ Plug 'qpkorr/vim-bufkill'
 Plug 'tpope/vim-repeat'
 Plug 'thinca/vim-quickrun'
 Plug 't9md/vim-choosewin'
+Plug 'yuttie/comfortable-motion.vim'
+Plug 'kana/vim-operator-user'
+Plug 'kana/vim-operator-replace'
 
 call plug#end()
 
@@ -179,6 +182,8 @@ set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr
 " Exモード無効
 noremap Q <Nop>
 noremap gQ <Nop>
+
+nmap _ <Plug>(operator-replace)
 
 " ---------------------------------------------------------------
 " コマンドモード & 挿入モードでのキーマッピング
