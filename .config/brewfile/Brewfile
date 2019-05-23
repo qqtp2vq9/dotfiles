@@ -1,3 +1,4 @@
+
 # tap repositories and their packages
 
 tap homebrew/core
@@ -167,15 +168,11 @@ tap homebrew/cask-versions
 tap homebrew/services
 
 tap homebrew/cask
-cask atom
 cask intellij-idea-ce
 cask karabiner-elements
-cask xquartz
 
 tap cloudfoundry/tap
 brew cf-cli
-
-tap d12frosted/emacs-plus
 
 tap neovim/neovim
 
@@ -186,7 +183,6 @@ tap rcmdnk/file
 brew brew-file
 
 tap sanemat/font
-brew ricty --with-powerline
 
 tap shyiko/ktlint
 
@@ -202,7 +198,6 @@ cask font-source-code-pro
 cask java
 cask java8
 cask java9
-cask qutebrowser
 cask sts
 
 # App Store applications
