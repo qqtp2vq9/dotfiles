@@ -130,6 +130,25 @@ export BROWSER=/Applications/Firefox.app
 PATH=$HOME/.zsh/plugins/s.sh:$PATH
 fpath=($HOME/.zsh/plugins/s.sh $fpath)
 
+if [[ ! -n $TMUX ]]; then
+  # get the IDs
+  ID="`tmux list-sessions`"
+  if [[ -z "$ID" ]]; then
+    ssh-add ~/.ssh/id_rsa
+    tmux new-session
+  fi
+  create_new_session="Create New Session"
+  ID="$ID\n${create_new_session}:"
+  ID="`echo $ID | $PERCOL | cut -d: -f1`"
+  if [[ "$ID" = "${create_new_session}" ]]; then
+    tmux new-session
+  elif [[ -n "$ID" ]]; then
+    tmux attach-session -t "$ID"
+  else
+    :  # Start terminal normally
+  fi
+fi
+
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:HOME/.cargo/bin:$PATH"
 
 # homebrew
