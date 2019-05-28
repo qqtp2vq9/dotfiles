@@ -94,7 +94,6 @@ brew lua
 brew lua@5.1
 brew luajit
 brew luarocks
-brew lynx
 brew mas
 brew maven
 brew mcrypt
