@@ -284,10 +284,6 @@ let g:quickrun_config._ = {
       \ 'outputter/buffer/vsplit'  : ':rightbelow 4sp',
       \ 'outputter/buffer/close_on_empty' : 1,
       \ }
-let g:quickrun_config['babel'] = {
-      \ 'cmdopt': '--stage 1',
-      \ 'exec': "babel %o %s | node"
-      \ }
 
 nmap <silent><leader>d :QuickRun<CR>
 nmap <silent><leader>dn  :QuickRun node<CR>
@@ -385,8 +381,8 @@ noremap <silent><expr> <leader>/ incsearch#go(<SID>config_easyfuzzymotion())
 
 " open-browser.vim
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
-nmap gx <Plug>(openbrowser-smart-search)
-vmap gx <Plug>(openbrowser-smart-search)
+nmap <silent>gx <Plug>(openbrowser-smart-search)
+vmap <silent>gx <Plug>(openbrowser-smart-search)
 
 " fzf コマンド検索
 nnoremap <Space>fc :Commands<CR>
