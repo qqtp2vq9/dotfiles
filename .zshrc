@@ -5,10 +5,10 @@
 export HISTFILE=${HOME}/.zsh_history
 
 # メモリに保存される履歴の件数
-export HISTSIZE=1000
+export HISTSIZE=4000
 
 # 履歴ファイルに保存される履歴の件数
-export SAVEHIST=100000
+export SAVEHIST=300000
 
 # 重複を記録しない
 setopt hist_ignore_dups
@@ -69,11 +69,14 @@ bindkey '^x^b' peco-branch # C-x C-b でブランチ選択
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME
 
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH:$GOROOT/bin:$GOPATH/bin"
+export RUBYLIB=$RUBYLIB:$RSPEC_RUBYLIB
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin::/usr/local/git/bin::$PATH:$GOROOT/bin:$GOPATH/bin"
+export PATH=$PATH:$RSPEC_PATH
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 alias gfp='git fetch --prune'
+# alias vim='nvim'
 alias sv='sudo nvim'
 
 # cdr
@@ -111,12 +114,12 @@ export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/e2fsprogs/bin:$PATH"
 export PATH="/usr/local/opt/e2fsprogs/sbin:$PATH"
 export PATH=$HOME/.nodebrew/current/bin:$PATH
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="/usr/local/Cellar/yarn/1.21.1/bin:/usr/local/Cellar/yarn/1.21.1/libexec/bin:$PATH"
+export MONO_GAC_PREFIX="/usr/local"
 
 export PYTHONPATH="$PYTHONPATH:~/.pyenv/versions/3.6.5/bin/python3.6"
 export LANG=ja_JP.UTF-8
-
-export MONO_GAC_PREFIX="/usr/local"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/usr/local/opt/php@7.1/bin:$PATH"
@@ -130,30 +133,44 @@ export BROWSER=/Applications/Firefox.app
 PATH=$HOME/.zsh/plugins/s.sh:$PATH
 fpath=($HOME/.zsh/plugins/s.sh $fpath)
 
-if [[ ! -n $TMUX ]]; then
-  # get the IDs
-  ID="`tmux list-sessions`"
-  if [[ -z "$ID" ]]; then
-    ssh-add ~/.ssh/id_rsa
-    tmux new-session
-  fi
-  create_new_session="Create New Session"
-  ID="$ID\n${create_new_session}:"
-  ID="`echo $ID | $PERCOL | cut -d: -f1`"
-  if [[ "$ID" = "${create_new_session}" ]]; then
-    tmux new-session
-  elif [[ -n "$ID" ]]; then
-    tmux attach-session -t "$ID"
-  else
-    :  # Start terminal normally
-  fi
-fi
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:HOME/.cargo/bin:$PATH"
-
 # homebrew
 alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
+
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+eval "$(rbenv init -)"
 
 # Set Spaceship ZSH as a prompt
 autoload -U promptinit; promptinit
 prompt spaceship
+
+function getups() {
+    if [ ! -x "`which cf`" ]; then
+        echo "command cf is not undefined"
+        return 1
+    fi
+    if [ ! -x "`which jq`" ]; then
+        echo "command jq is not undefined"
+        return 1
+    fi
+    if [ $# -ne 1 ]; then
+        echo "Usage: getups <app_name>"
+        return 1
+    fi
+    LANG=C cf env $1 | awk -v RS= -v ORS='\n\n' '/System-Provided:/' | awk 'BEGIN{lines=""}NR>1{lines=lines$0}END{print lines}' | jq .VCAP_SERVICES -c -M
+}
+ 
+function setcfenv2cb() {
+  UPS=`getups $1`
+  if [ $? = 1 ]; then
+    echo "Error at getups"
+    return 1;
+  fi
+  (
+    echo "VCAP_SERVICES=$UPS"
+    LANG=C cf env $1 | awk -v RS= -v ORS='\n\n' '/User-Provided:/' | awk '/./{print $0}' | awk -F ': ' 'NR>1 {sub(": ", "="); print $0}'
+  ) | pbcopy
+}
+
+export PS1="$NEWLINE${COLOR_USER_CURRENT_STATE}$WORKING_DIRECTORY$NEWLINE${COLOR_STATEMENT}$PROMPT_SYMBOL${COLOR_RESET} $ "
+ssh-add ~/.ssh/id_rsa 
