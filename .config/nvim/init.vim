@@ -141,6 +141,9 @@ Plug 'othree/yajs.vim', { 'for': 'javascript' }
 " tag系
 Plug 'liuchengxu/vista.vim'
 
+" 矩形ペースト
+Plug 'bfredl/nvim-miniyank'
+
 " その他
 Plug 'terryma/vim-multiple-cursors'
 Plug 'airblade/vim-rooter'
@@ -209,9 +212,6 @@ nnoremap <silent><Space><Esc> :noh<CR>
 " 上下と入れ替えてインデント調整
 nnoremap sj ddp==
 nnoremap sk ddkP==
-
-nmap <silent> <c-[> {
-nmap <silent> <c-]> }
 " ---------------------------------------------------------------
 " コマンドモードでのキーマッピング
 cnoremap <c-p> <up>
@@ -284,10 +284,22 @@ let g:quickrun_config._ = {
       \ 'outputter/buffer/vsplit'  : ':rightbelow 4sp',
       \ 'outputter/buffer/close_on_empty' : 1,
       \ }
+let g:quickrun_config['make'] = {
+      \ 'command'   : 'make',
+      \ 'exec'      : '%c %o',
+      \ 'runner'    : 'vimproc',
+      \ 'runner/vimproc/updatetime' : 60,
+      \ 'outputter' : 'error',
+      \ 'outputter/error/success' : 'buffer',
+      \ 'outputter/error/error'   : 'quickfix',
+      \ 'outputter/buffer/vsplit'  : ':rightbelow 4sp',
+      \ 'outputter/buffer/close_on_empty' : 1,
+      \ }
 
 nmap <silent><leader>d :QuickRun<CR>
 nmap <silent><leader>dn  :QuickRun node<CR>
 nmap <silent><leader>db  :QuickRun babel<CR>
+nmap <silent><leader>dm  :QuickRun make<CR>
 nmap <leader>da :QuickRun
 nmap <leader>ds :QuickRunSwitch
 
@@ -315,6 +327,10 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Turn on case insensitive feature
 let g:EasyMotion_smartcase = 1
+
+" miniyank
+map p <Plug>(miniyank-autoput)
+map P <Plug>(miniyank-autoPut)
 
 " easymotion
 map <silent> <leader>j <Plug>(easymotion-j)
