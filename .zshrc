@@ -22,6 +22,8 @@ source $ZPLUG_HOME/init.zsh
 # anyframe
 # http://qiita.com/mollifier/items/81b18c012d7841ab33c3
 zplug "mollifier/anyframe"
+bindkey '^xa' anyframe-widget-select-widget
+bindkey '^x^a' anyframe-widget-select-widget
 
 # enhancd
 # https://github.com/b4b4r07/enhancd
@@ -76,38 +78,8 @@ export PATH=$PATH:$RSPEC_PATH
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 alias gfp='git fetch --prune'
-# alias vim='nvim'
+alias vim='nvim'
 alias sv='sudo nvim'
-
-# cdr
-autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
-add-zsh-hook chpwd chpwd_recent_dirs
-
-# anyframe bindkey
-bindkey '^xc' anyframe-widget-cdr
-bindkey '^x^c' anyframe-widget-cdr
-
-bindkey '^xr' anyframe-widget-execute-history
-bindkey '^x^r' anyframe-widget-execute-history
-
-bindkey '^xp' anyframe-widget-put-history
-bindkey '^x^p' anyframe-widget-put-history
-
-bindkey '^xg' anyframe-widget-cd-ghq-repository
-bindkey '^x^g' anyframe-widget-cd-ghq-repository
-
-bindkey '^xk' anyframe-widget-kill
-bindkey '^x^k' anyframe-widget-kill
-
-bindkey '^xi' anyframe-widget-insert-git-branch
-bindkey '^x^i' anyframe-widget-insert-git-branch
-
-bindkey '^xf' anyframe-widget-insert-filename
-bindkey '^x^f' anyframe-widget-insert-filename
-
-function agvim () {
-  vim $(ag $@ | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
-}
 
 export PATH="/usr/local/opt/icu4c/sbin:$PATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
@@ -132,6 +104,9 @@ source ~/.mysqlenv/etc/bashrc
 export BROWSER=/Applications/Firefox.app
 PATH=$HOME/.zsh/plugins/s.sh:$PATH
 fpath=($HOME/.zsh/plugins/s.sh $fpath)
+
+## Rust
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # homebrew
 alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin brew"
@@ -174,3 +149,8 @@ function setcfenv2cb() {
 
 export PS1="$NEWLINE${COLOR_USER_CURRENT_STATE}$WORKING_DIRECTORY$NEWLINE${COLOR_STATEMENT}$PROMPT_SYMBOL${COLOR_RESET} $ "
 ssh-add ~/.ssh/id_rsa 
+export PATH="/usr/local/opt/cython/bin:$PATH"
+
+if [[ -r "$(brew --prefix)/opt/mcfly/mcfly.zsh" ]]; then
+  source "$(brew --prefix)/opt/mcfly/mcfly.zsh"
+fi

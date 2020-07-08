@@ -1,204 +1,128 @@
-
-# tap repositories and their packages
-
-tap homebrew/core
-brew apr
-brew apr-util
-brew aspell
-brew autoconf
-brew automake
-brew bash
-brew bdw-gc
-brew boost
-brew brew-gem
-brew brotli
-brew c-ares
-brew cairo
-brew cassandra
-brew ccm
-brew cmake
-brew composer
-brew coreutils
-brew cscope
-brew csshx
-brew curl-openssl
-brew cython
-brew czmq
-brew e2fsprogs
-brew fontconfig
-brew fontforge
-brew freetds
-brew freetype
-brew fribidi
-brew fzf
-brew gd
-brew gdbm
-brew gdk-pixbuf
-brew gettext
-brew ghq
-brew giflib
-brew git
-brew glib
-brew glide
-brew gmp
-brew gnutls
-brew go
-brew gobject-introspection
-brew goenv
-brew gradle
-brew graphite2
-brew graphviz
-brew harfbuzz
-brew httpd
-brew icu4c
-brew ilmbase
-brew imagemagick
-brew imagemagick@6
-brew jansson
-brew jemalloc
-brew jenv
-brew jpeg
-brew jq
-brew kotlin
-brew ktlint
-brew libcroco
-brew libde265
-brew libev
-brew libevent
-brew libffi
-brew libheif
-brew libiconv
-brew libidn
-brew libidn2
-brew libmetalink
-brew libomp
-brew libpng
-brew libpq
-brew librsvg
-brew libsodium
-brew libspiro
-brew libssh2
-brew libtasn1
-brew libtermkey
-brew libtiff
-brew libtool
-brew libuninameslist
-brew libunistring
-brew libuv
-brew libvterm
-brew libxml2
-brew libyaml
-brew libzip
-brew little-cms2
-brew lua
-brew lua@5.1
-brew luajit
-brew luarocks
-brew mas
-brew maven
-brew mcrypt
-brew md5sha1sum
-brew mhash
-brew mono
-brew msgpack
-brew ncurses
-brew neovim --HEAD
-brew nettle
-brew nghttp2
-brew nkf
-brew oniguruma
-brew openexr
-brew openjpeg
-brew openldap
-brew openssl
-brew openssl@1.1
-brew p11-kit
-brew pandoc
-brew pango
-brew pcre
-brew pcre2
-brew peco
-brew perl
-brew php-code-sniffer
-brew php@7.1
-brew pixman
-brew pkg-config
-brew privoxy
-brew python
-brew python@2
-brew q
-brew readline
-brew reattach-to-user-namespace
-brew redis
-brew ripgrep
-brew rtmpdump
-brew ruby
-brew rxvt-unicode
-brew shared-mime-info
-brew sqlite
-brew telnet
-brew the_silver_searcher
-brew tidy-html5
-brew tig
-brew tmux
-brew unbound
-brew unibilium
-brew unixodbc
-brew vim
-brew w3m
-brew webp
-brew wget
-brew x265
-brew xz
-brew z
-brew zeromq
-brew zlib
-brew zplug
-brew zsh
-brew zsh-syntax-highlighting
-
-tap homebrew/brewdler
-
-tap homebrew/cask-fonts
-cask font-hack-nerd-font
-
-tap homebrew/cask-versions
-
-tap homebrew/services
-
-tap homebrew/cask
-cask intellij-idea-ce
-cask karabiner-elements
-
-tap cloudfoundry/tap
-brew cf-cli
-
-tap neovim/neovim
-
-tap pivotal/tap
-brew springboot
-
-tap rcmdnk/file
-brew brew-file
-
-tap sanemat/font
-
-tap shyiko/ktlint
-
-tap theseal/ssh-askpass
-brew ssh-askpass
-
-tap universal-ctags/universal-ctags
-brew universal-ctags --with-jansson --HEAD
-
-# Other Cask applications
-cask docker
-cask font-source-code-pro
-cask java
-cask java8
-cask java9
-cask sts
-
-# App Store applications
-appstore 497799835 com.apple.dt.Xcode (10.2.1)
-appstore 803453959 com.tinyspeck.slackmacgap (3.4.0)
+tap "athenz/athenz-utils", "https://ghe.corp.yahoo.co.jp/athenz/homebrew-athenz-utils"
+tap "athenz/zms-cli", "https://ghe.corp.yahoo.co.jp/athenz/homebrew-zms-cli"
+tap "cantino/mcfly", "https://github.com/cantino/mcfly"
+tap "cloudfoundry/tap"
+tap "d12frosted/emacs-plus"
+tap "homebrew/brewdler"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "idservice/idn", "https://ghe.corp.yahoo.co.jp/idservice/homebrew-idn"
+tap "neovim/neovim"
+tap "pivotal/tap"
+tap "rcmdnk/file"
+tap "sanemat/font"
+tap "shyiko/ktlint"
+tap "theseal/ssh-askpass"
+tap "universal-ctags/universal-ctags"
+brew "autoconf"
+brew "automake"
+brew "bash"
+brew "icu4c"
+brew "brew-gem"
+brew "freetype"
+brew "fontconfig"
+brew "gdbm"
+brew "gettext"
+brew "libffi"
+brew "pcre"
+brew "readline"
+brew "sqlite"
+brew "xz"
+brew "glib"
+brew "pixman"
+brew "cairo"
+brew "cassandra", restart_service: true
+brew "ccm"
+brew "cmake"
+brew "composer"
+brew "coreutils"
+brew "cscope"
+brew "csshx"
+brew "libevent"
+brew "zeromq"
+brew "czmq"
+brew "e2fsprogs"
+brew "libtool"
+brew "fontforge"
+brew "unixodbc"
+brew "fzf"
+brew "ghq"
+brew "git"
+brew "go"
+brew "glide"
+brew "pkg-config"
+brew "goenv"
+brew "gradle"
+brew "graphviz"
+brew "httpd"
+brew "imagemagick"
+brew "jenv"
+brew "jq"
+brew "kotlin"
+brew "libsodium"
+brew "libxml2"
+brew "mas"
+brew "maven"
+brew "md5sha1sum"
+brew "mono"
+brew "mysql-client"
+brew "neovim", args: ["HEAD"]
+brew "nkf"
+brew "pandoc"
+brew "peco"
+brew "php"
+brew "php-code-sniffer"
+brew "php-cs-fixer"
+brew "php@7.2"
+brew "privoxy"
+brew "q"
+brew "rbenv"
+brew "reattach-to-user-namespace"
+brew "redis"
+brew "ripgrep"
+brew "rxvt-unicode"
+brew "sbt"
+brew "scala"
+brew "telnet"
+brew "the_silver_searcher"
+brew "tig"
+brew "tmux"
+brew "vim"
+brew "w3m"
+brew "wget"
+brew "yarn"
+brew "z"
+brew "zlib"
+brew "zplug"
+brew "zsh"
+brew "zsh-syntax-highlighting"
+brew "athenz/athenz-utils/athenz-utils"
+brew "athenz/zms-cli/zms-cli"
+brew "cantino/mcfly/mcfly"
+brew "cloudfoundry/tap/cf-cli"
+brew "idservice/idn/idn"
+brew "pivotal/tap/springboot"
+brew "rcmdnk/file/brew-file"
+brew "sanemat/font/ricty", args: ["with-powerline"]
+brew "shyiko/ktlint/ktlint"
+brew "theseal/ssh-askpass/ssh-askpass"
+brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD", "with-jansson"]
+cask "adoptopenjdk8"
+cask "atom"
+cask "clipy"
+cask "corretto"
+cask "docker"
+cask "font-hack-nerd-font"
+cask "font-source-code-pro"
+cask "hyper"
+cask "intellij-idea-ce"
+cask "java"
+cask "java8"
+cask "java9"
+cask "karabiner-elements"
+cask "sts"
+mas "Magnet", id: 441258766
+mas "Xcode", id: 497799835
