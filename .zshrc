@@ -148,9 +148,15 @@ function setcfenv2cb() {
 }
 
 export PS1="$NEWLINE${COLOR_USER_CURRENT_STATE}$WORKING_DIRECTORY$NEWLINE${COLOR_STATEMENT}$PROMPT_SYMBOL${COLOR_RESET} $ "
-ssh-add ~/.ssh/id_rsa 
 export PATH="/usr/local/opt/cython/bin:$PATH"
 
 if [[ -r "$(brew --prefix)/opt/mcfly/mcfly.zsh" ]]; then
   source "$(brew --prefix)/opt/mcfly/mcfly.zsh"
 fi
+
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+  eval `ssh-agent`
+  ln -sf "$SSH_AUTH_SOCK" $HOME/.ssh/ssh_auth_sock
+  ssh-add $HOME/.ssh/id_rsa
+fi
+export SSH_AUTH_SOCK=$HOME/.ssh/ssh_auth_sock
