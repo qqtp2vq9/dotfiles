@@ -109,7 +109,7 @@ export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME
 
 export RUBYLIB=$RUBYLIB:$RSPEC_RUBYLIB
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:$PATH:$GOROOT/bin:$GOPATH/bin"
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/git/bin:$PATH:$GOROOT/bin:$GOPATH/bin"
 export PATH=$PATH:$RSPEC_PATH
 export PATH="/Library/Frameworks/Mono.framework/Versions/current/bin:$PATH"
 export PATH="$HOME/work/pulsar/apache-pulsar-2.1.1-incubating/bin:$PATH"
@@ -144,41 +144,6 @@ alias brew="PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin br
 # Set Spaceship ZSH as a prompt
 eval "$(starship init zsh)"
 
-function getups() {
-    if [ ! -x "`which cf`" ]; then
-        echo "command cf is not undefined"
-        return 1
-    fi
-    if [ ! -x "`which jq`" ]; then
-        echo "command jq is not undefined"
-        return 1
-    fi
-    if [ $# -ne 1 ]; then
-        echo "Usage: getups <app_name>"
-        return 1
-    fi
-    LANG=C cf env $1 | awk -v RS= -v ORS='\n\n' '/System-Provided:/' | awk 'BEGIN{lines=""}NR>1{lines=lines$0}END{print lines}' | jq .VCAP_SERVICES -c -M
-}
- 
-show_buffer_stack() {
-  POSTDISPLAY="
-stack: $LBUFFER"
-  zle push-line-or-edit
-}
-zle -N show_buffer_stack
-
-function setcfenv2cb() {
-  UPS=`getups $1`
-  if [ $? = 1 ]; then
-    echo "Error at getups"
-    return 1;
-  fi
-  (
-    echo "VCAP_SERVICES=$UPS"
-    LANG=C cf env $1 | awk -v RS= -v ORS='\n\n' '/User-Provided:/' | awk '/./{print $0}' | awk -F ': ' 'NR>1 {sub(": ", "="); print $0}'
-  ) | pbcopy
-}
-
 ## pet
 function prev() {
   PREV=$(fc -lrn | head -n 1)
@@ -198,7 +163,6 @@ export PATH="/usr/local/opt/cython/bin:$PATH"
 
 export ORACLE_HOME=$HOME/tools/sqlplus/instantclient_19_8
 export PATH=${ORACLE_HOME}:${PATH}
-export PATH=/opt/cisco/anyconnect/bin:$PATH
 export BPCTL_V2_DEFAULT=true
 
 eval "$(zoxide init zsh)"
@@ -212,20 +176,3 @@ path=(
     # reject world-writable directories (^W)
     $path(N-/^W)
 )
-
-export SSH_AUTH_SOCK=$HOME/.ssh/ssh_auth_sock
-if [ ! -S ~/.ssh/ssh_auth_sock ]; then
-  eval `ssh-agent`
-  ln -sf "$SSH_AUTH_SOCK" $HOME/.ssh/ssh_auth_sock
-  ssh-add $HOME/.ssh/id_rsa
-
-  # completions
-  if type brew &>/dev/null; then
-    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-    spk-cli completion zsh > ${fpath[1]}/_spk-cli
-
-    autoload -Uz compinit
-    compinit
-  fi
-fi
-
