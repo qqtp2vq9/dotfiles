@@ -1,0 +1,21 @@
+" General Settings
+set update.lastchecktime 1612750290105
+set configversion 2.0
+set allowautofocus false
+set smoothscroll true
+
+" For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
+" vim: set filetype=tridactyl
+bind YY composite js document.title + "\n" + document.URL | yank
+bind h tabprev
+bind l tabnext
+bind x tabclose
+
+bind --mode=ex <C-p> ex.prev_completion
+bind --mode=ex <C-n> ex.next_completion
+
+set searchurls.gi https://github.com/search?q=%s
+set searchurls.dio https://dev.classmethod.jp/?s=%s
+set searchurls.qit https://qiita.com/search?q=%s
+set searchurls.zen https://zenn.dev/search?q=%s
+set searchurls.fu https://www.commandlinefu.com/commands/matching/%s/YWJj/sort-by-votes
