@@ -12,7 +12,7 @@ settings.smoothScroll = true
 settings.scrollStepSize = 280
 settings.theme = `
 #sk_status, #sk_find {
-  font-size: 12pt;
+  font-size: 18pt;
 }
 #sk_omnibarSearchResult .highlight {
   background: #f9ec89;
@@ -64,8 +64,8 @@ map('S', 'sg') // 選択したテキストまたはクリップボードから�
 map('L', 'D') // forward in history
 map('h', 'E') // previousTab
 map('l', 'R') // nextTab
-map('F', 'af') // 別タブで開く
 map('R', 'gf') // 別タブで開く
+map('F', 'af') // 別タブで開く
 map('d', 'x') // タブ閉じる
 map('u', 'X') // 閉じたタブ復元
 
@@ -249,9 +249,9 @@ mapkey('ok', '#8Open Search with alias k', function () {
 })
 
 // alc
-addSearchAliasX('a', 'alc', 'https://eow.alc.co.jp/search?q=')
-mapkey('oa', '#8Open Search with alias a', function () {
-  Front.openOmnibar({ type: 'SearchEngine', extra: 'a' })
+addSearchAliasX('al', 'alc', 'https://eow.alc.co.jp/search?q=')
+mapkey('oa', '#8Open Search with alias al', function () {
+  Front.openOmnibar({ type: 'SearchEngine', extra: 'al' })
 })
 unmap("<Ctrl-'>")
 mapkey("<Ctrl-'>", 'eowf', () => {
