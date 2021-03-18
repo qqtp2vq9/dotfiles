@@ -66,7 +66,7 @@ map('h', 'E') // previousTab
 map('l', 'R') // nextTab
 map('R', 'gf') // 別タブで開く
 map('d', 'x') // タブ閉じる
-map('u', 'X') // タブ閉じる
+map('u', 'X') // 閉じたタブ復元
 
 map('<Ctrl-[>', '<Esc>')
 
@@ -562,8 +562,17 @@ if (/^https:\/\/www.amazon.co.jp\/gp\/video\//.test(window.location.href)) {
   unmapKeys(['d', 's', 'z', 'x', 'r', 'g'])
 }
 
+// ------------------------------------------------------------
 // style
 Hints.style('text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; color: #33cccc; font-size: 18px; font-family: Overpass, "ヒラギノ角ゴ Pro", Avenir, sans-serif; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#565756), color-stop(100%,#444444)); border: 1px solid #E4E4E4; opacity: 1.0; text-shadow: none !important;')
+Hints.style (`font-family: monospace; font-size: 13pt; text-transform: lowercase;`, "text")
+// theme
+settings.theme = `
+  .sk_theme {
+    font-family: sans-serif;
+    font-size: 13pt;
+}`;
+
 // click `Save` button to make above settings to take effect.
 
 // refs.
