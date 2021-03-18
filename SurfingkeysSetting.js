@@ -59,16 +59,12 @@ const tabOpenBackground = (url) =>
   })
 
 // ---- Maps ----
-map('>_r', 'r')
-map('>_E', 'E')
-map('>_R', 'R')
-map('>_S', 'S')
+map('H', 'S') // back in history
 map('S', 'sg') // 選択したテキストまたはクリップボードからググる
-map('H', '>_S') // back in history
 map('L', 'D') // forward in history
 map('h', 'E') // previousTab
 map('l', 'R') // nextTab
-map('R', 'g?') // 別タブで開く
+map('R', 'gf') // 別タブで開く
 map('d', 'x') // タブ閉じる
 map('u', 'X') // タブ閉じる
 
@@ -571,4 +567,3 @@ if (/^https:\/\/www.amazon.co.jp\/gp\/video\//.test(window.location.href)) {
 // refs.
 // * https://github.com/b0o/surfingkeys-conf
 // * https://github.com/ncaq/surfingkeys-ncaq
-
