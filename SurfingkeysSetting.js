@@ -120,6 +120,7 @@ addSearchAliasX('dio', 'DeveloperIO検索', 'https://dev.classmethod.jp/?s={0}')
 addSearchAliasX('zen', 'Zenn検索', 'https://zenn.dev/search?q={0}')
 addSearchAliasX('fu', 'コマンドワンライナー検索', 'https://www.commandlinefu.com/commands/matching/{0}/YWJj/sort-by-votes')
 addSearchAliasX('fa', 'facebook検索', 'https://www.facebook.com/search/top?q={0}')
+addSearchAliasX('ghb', 'github検索', 'https://github.com/search?q={0}&type=code')
 
 
 // Yahoo!リアルタイム検索
