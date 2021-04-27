@@ -121,6 +121,7 @@ addSearchAliasX('zen', 'Zenn検索', 'https://zenn.dev/search?q={0}')
 addSearchAliasX('fu', 'コマンドワンライナー検索', 'https://www.commandlinefu.com/commands/matching/{0}/YWJj/sort-by-votes')
 addSearchAliasX('fa', 'facebook検索', 'https://www.facebook.com/search/top?q={0}')
 addSearchAliasX('gt', 'google翻訳', 'https://www.google.com/search?q=%E7%BF%BB%E8%A8%B3%20{0}')
+addSearchAliasX('dt', 'DeepL翻訳', 'https://www.deepl.com/translator#ja/en/{0}')
 
 // Yahoo!リアルタイム検索
 addSearchAliasX(
