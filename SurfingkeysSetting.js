@@ -94,6 +94,12 @@ removeSearchAliasX('b')
 removeSearchAliasX('w')
 unmapKeys(['ob', 'sb', 'ow', 'sw'])
 
+// Google jp 1年以内
+addSearchAliasX('1', 'Google jp 1年以内', 'https://www.google.co.jp/search?q={0}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja');
+mapkey('o1', '#8Open Search with alias 1', function() {
+  Front.openOmnibar({type: "SearchEngine", extra: "1"});
+});
+
 // hatena tag
 addSearchAliasX('ht', 'hatena tag', 'http://b.hatena.ne.jp/search/tag?q=')
 
