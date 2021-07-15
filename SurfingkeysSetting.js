@@ -20,6 +20,11 @@ settings.theme = `
 `
 
 // ---- Utils ----
+// p押下で一時的にOFF
+mapkey('p', '#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys', function() {
+  Normal.passThrough(1500);
+});
+
 const unmapKeys = (keys) => keys.forEach((key) => unmap(key))
 const iunmapKeys = (keys) => keys.forEach((key) => iunmap(key))
 const escapeMap = {
