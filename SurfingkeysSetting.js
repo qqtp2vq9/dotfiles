@@ -1,5 +1,5 @@
 // ---- Settings ----
-Hints.characters = 'hlasdfgyuiowertnm'
+api.Hints.setCharacters("asdfgyuiowertnm")
 settings.scrollStepSize = 140
 settings.hintAlign = 'left'
 settings.aceKeybindings = 'emacs'
@@ -9,24 +9,20 @@ settings.newTabPosition = 'right'
 settings.omnibarMaxResults = 12
 settings.historyMUOrder = false
 settings.smoothScroll = true
-settings.scrollStepSize = 280
-settings.theme = `
-#sk_status, #sk_find {
-  font-size: 18pt;
-}
-#sk_omnibarSearchResult .highlight {
-  background: #f9ec89;
-}
-`
+settings.scrollStepSize = 560
+settings.tabsThreshold = false
+settings.stealFocusOnLoad = true
+settings.enableAutoFocus = false
+settings.showModeStatus = true
 
 // ---- Utils ----
 // p押下で一時的にOFF
-mapkey('p', '#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys', function() {
+api.mapkey('p', '#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys', function() {
   Normal.passThrough(1500);
 });
 
-const unmapKeys = (keys) => keys.forEach((key) => unmap(key))
-const iunmapKeys = (keys) => keys.forEach((key) => iunmap(key))
+const unmapKeys = (keys) => keys.forEach((key) => api.unmap(key))
+const iunmapKeys = (keys) => keys.forEach((key) => api.iunmap(key))
 const escapeMap = {
   '&': '&amp;',
   '<': '&lt;',
@@ -64,19 +60,29 @@ const tabOpenBackground = (url) =>
   })
 
 // ---- Maps ----
-map('H', 'S') // back in history
-map('S', 'sg') // 選択したテキストまたはクリップボードからググる
-map('L', 'D') // forward in history
-map('h', 'E') // previousTab
-map('l', 'R') // nextTab
-map('R', 'gf') // 別タブで開く
-map('F', 'af') // 別タブで開く
-map('d', 'x') // タブ閉じる
-map('u', 'X') // 閉じたタブ復元
+api.unmap('H')
+api.map('H', 'S') // back in history
+api.unmap('S')
+api.unmap('L')
+api.map('L', 'D') // foward in history
+api.unmap('D')
+api.map('S', 'sg') // 選択したテキストまたはクリップボードからググる
+api.unmap('h')
+api.map('h', 'E') // previousTab
+api.unmap('E')
+api.unmap('l')
+api.map('l', 'R') // nextTab
+api.unmap('R')
+api.unmap('F')
+api.map('F', 'af') // 別タブで開く
+api.unmap('d')
+api.map('d', 'x') // タブ閉じる
+api.unmap('x')
+api.unmap('u')
+api.map('u', 'X') // 閉じたタブ復元
+api.unmap('X')
 
-map('<Ctrl-[>', '<Esc>')
-
-iunmap(':') // disable emoji
+api.iunmap(':') // disable emoji
 // disable vim binding in insert mode
 iunmapKeys([
   '<Ctrl-a>',
@@ -90,69 +96,65 @@ iunmapKeys([
 unmapKeys(['cp', 'spa', 'spb', 'spd', 'spc', 'sps', 'spi', ';cp', ';ap'])
 
 // ---- Search ----
-removeSearchAliasX('b')
-removeSearchAliasX('w')
+api.removeSearchAlias('b')
+api.removeSearchAlias('w')
 unmapKeys(['ob', 'sb', 'ow', 'sw'])
 
-// Google jp 1年以内
-addSearchAliasX('1', 'Google jp 1年以内', 'https://www.google.co.jp/search?q={0}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja');
-mapkey('o1', '#8Open Search with alias 1', function() {
+// Google 1年以内
+api.addSearchAlias('1', 'Google 1年以内', 'https://www.google.co.jp/search?q={0}&tbs=qdr:y');
+api.mapkey('o1', '#8Open Search with alias 1', function() {
   Front.openOmnibar({type: "SearchEngine", extra: "1"});
 });
 
-// hatena tag
-addSearchAliasX('ht', 'hatena tag', 'http://b.hatena.ne.jp/search/tag?q=')
-
 // Qiita
-addSearchAliasX('qi', 'Qiita', 'https://qiita.com/search?q=')
-addSearchAliasX('qt', 'Qiita tag', 'https://qiita.com/tags/')
+api.addSearchAlias('qi', 'Qiita', 'https://qiita.com/search?q=')
+api.addSearchAlias('qt', 'Qiita tag', 'https://qiita.com/tags/')
 
 // Twitter
-addSearchAliasX(
+api.addSearchAlias(
   'tw',
   'Twitter',
   'https://twitter.com/search?q=',
   's',
   'https://twitter.com/i/search/typeahead.json?count=10&filters=true&q=',
   (response) =>
-    JSON.parse(response.text).topics.map((v) =>
+    JSON.parse(response.text).topics.api.map((v) =>
       createSuggestionItem(v.topic, {
         url: `https://twitter.com/search?q=${encodeURIComponent(v.topic)}`,
       })
     )
 )
-mapkey('otw', '#8Open Search with alias tw', function () {
+api.mapkey('otw', '#8Open Search with alias tw', function () {
   Front.openOmnibar({ type: 'SearchEngine', extra: 'tw' })
 })
 
 // Search
-addSearchAliasX('gi', 'github検索', 'https://github.com/search?q={0}&type=code')
-addSearchAliasX('dio', 'DeveloperIO検索', 'https://dev.classmethod.jp/?s={0}')
-addSearchAliasX('zen', 'Zenn検索', 'https://zenn.dev/search?q={0}')
-addSearchAliasX('fu', 'コマンドワンライナー検索', 'https://www.commandlinefu.com/commands/matching/{0}/YWJj/sort-by-votes')
-addSearchAliasX('fa', 'facebook検索', 'https://www.facebook.com/search/top?q={0}')
-addSearchAliasX('gt', 'google翻訳', 'https://www.google.com/search?q=%E7%BF%BB%E8%A8%B3%20{0}')
-addSearchAliasX('dt', 'DeepL翻訳', 'https://www.deepl.com/translator#ja/en/{0}')
+api.addSearchAlias('gi', 'github検索', 'https://github.com/search?q={0}&type=code')
+api.addSearchAlias('dio', 'DeveloperIO検索', 'https://dev.classmethod.jp/?s={0}')
+api.addSearchAlias('zen', 'Zenn検索', 'https://zenn.dev/search?q={0}')
+api.addSearchAlias('fa', 'facebook検索', 'https://www.facebook.com/search/top?q={0}')
+api.addSearchAlias('gt', 'google翻訳', 'https://www.google.com/search?q=%E7%BF%BB%E8%A8%B3%20{0}')
+api.addSearchAlias('t',  'DeepL翻訳', 'https://www.deepl.com/translator#ja/en/{0}')
 
 // Yahoo!リアルタイム検索
-addSearchAliasX(
+api.addSearchAlias(
   'r',
   'Yahoo!リアルタイム検索',
-  'http://realtime.search.yahoo.co.jp/search?ei=UTF-8&p='
+  'https://search.yahoo.co.jp/realtime/search?ei=UTF-8&p='
 )
-mapkey('or', '#8Open Search with alias r', function () {
+api.mapkey('or', '#8Open Search with alias r', function () {
   Front.openOmnibar({ type: 'SearchEngine', extra: 'r' })
 })
 
 // Wikipedia jp
-addSearchAliasX(
+api.addSearchAlias(
   'wi',
   'Wikipedia',
   'https://ja.wikipedia.org/w/index.php?search='
 )
 
 // MDN
-addSearchAliasX(
+api.addSearchAlias(
   'md',
   'MDN',
   'https://developer.mozilla.org/ja/search?q=',
@@ -160,7 +162,7 @@ addSearchAliasX(
   'https://developer.mozilla.org/api/v1/search/ja?q=',
   (response) => {
     const res = JSON.parse(response.text)
-    return res.documents.map((s) => {
+    return res.documents.api.map((s) => {
       let excerpt = escapeForAlias(s.excerpt)
       if (excerpt.length > 240) {
         excerpt = `${excerpt.slice(0, 240)}…`
@@ -185,14 +187,14 @@ addSearchAliasX(
 )
 
 // npm
-addSearchAliasX(
+api.addSearchAlias(
   'np',
   'npm',
   'https://www.npmjs.com/search?q=',
   's',
   'https://api.npms.io/v2/search/suggestions?size=20&q=',
   (response) =>
-    JSON.parse(response.text).map((s) => {
+    JSON.parse(response.text).api.map((s) => {
       let flags = ''
       let desc = ''
       let stars = ''
@@ -206,7 +208,7 @@ addSearchAliasX(
       }
       if (s.flags) {
         Object.keys(s.flags).forEach((f) => {
-          flags += `[<span style='color:#ff4d00'>⚑</span> ${escapeForAlias(
+          flags += `[<f4d00'>⚑</span> ${escapeForAlias(
             f
           )}] `
         })
@@ -229,14 +231,14 @@ addSearchAliasX(
 )
 
 // Docker Hub
-addSearchAliasX(
+api.addSearchAlias(
   'dh',
   'Docker Hub',
   'https://hub.docker.com/search/?q=',
   's',
   'https://hub.docker.com/v2/search/repositories/?page_size=20&query=',
   (response) =>
-    JSON.parse(response.text).results.map((s) => {
+    JSON.parse(response.text).results.api.map((s) => {
       let meta = ''
       let repo = s.repo_name
       meta += `[⭐${escapeForAlias(s.star_count)}] `
@@ -257,32 +259,32 @@ addSearchAliasX(
     })
 )
 
-mapkey('ok', '#8Open Search with alias k', function () {
+api.mapkey('ok', '#8Open Search with alias k', function () {
   Front.openOmnibar({ type: 'SearchEngine', extra: 'k' })
 })
 
 // alc
-addSearchAliasX('al', 'alc', 'https://eow.alc.co.jp/search?q=')
-mapkey('oa', '#8Open Search with alias al', function () {
+api.addSearchAlias('al', 'alc', 'https://eow.alc.co.jp/search?q=')
+api.mapkey('oa', '#8Open Search with alias al', function () {
   Front.openOmnibar({ type: 'SearchEngine', extra: 'al' })
 })
-unmap("<Ctrl-'>")
-mapkey("<Ctrl-'>", 'eowf', () => {
+api.unmap("<Ctrl-'>")
+api.mapkey("<Ctrl-'>", 'eowf', () => {
   searchSelectedWith('https://eowf.alc.co.jp/search?q=', false, false, '')
 })
 
 // ---- Mapkeys ----//
 const ri = { repeatIgnore: true }
 
-const Hint = (selector, action = Hints.dispatchMouseClick) => () =>
-  Hints.create(selector, action)
+const Hint = (selector, action = api.Hints.dispatchMouseClick) => () =>
+  api.Hints.create(selector, action)
 // --- Global mappings ---//
 //  0: Help
 //  1: Mouse Click
 //  2: Scroll Page / Element
 //  3: Tabs
 //  4: Page Navigation
-mapkey(
+api.mapkey(
   'gI',
   '#4View image in new tab',
   Hint('img', (i) => tabOpenLink(i.src)),
@@ -291,7 +293,7 @@ mapkey(
 //  5: Sessions
 //  6: Search selected with
 //  7: Clipboard
-mapkey(
+api.mapkey(
   'yI',
   '#7Copy Image URL',
   Hint('img', (i) => Clipboard.write(i.src)),
@@ -319,31 +321,31 @@ const copyHtmlLink = () => {
   Front.showBanner('Ritch Copied: ' + document.title)
 }
 
-mapkey('cm', '#7Copy title and link to markdown', () => {
+api.mapkey('cm', '#7Copy title and link to markdown', () => {
   copyTitleAndUrl('[%TITLE%](%URL%)')
 })
-mapkey('ct', '#7Copy title and link to textile', () => {
+api.mapkey('ct', '#7Copy title and link to textile', () => {
   copyTitleAndUrl('"%TITLE%":%URL%')
 })
-mapkey('ch', '#7Copy title and link to human readable', () => {
+api.mapkey('ch', '#7Copy title and link to human readable', () => {
   copyTitleAndUrl('%TITLE% / %URL%')
 })
-mapkey('cb', '#7Copy title and link to scrapbox', () => {
+api.mapkey('cb', '#7Copy title and link to scrapbox', () => {
   copyTitleAndUrl('[%TITLE% %URL%]')
 })
-mapkey('ca', '#7Copy title and link to href', () => {
+api.mapkey('ca', '#7Copy title and link to href', () => {
   copyTitleAndUrl('<a href="%URL%">%TITLE%</a>')
 })
-mapkey('cp', '#7Copy title and link to plantuml', () => {
+api.mapkey('cp', '#7Copy title and link to plantuml', () => {
   copyTitleAndUrl('[[%URL% %TITLE%]]')
 })
-mapkey('cr', '#7Copy rich text link', () => {
+api.mapkey('cr', '#7Copy rich text link', () => {
   copyHtmlLink()
 })
-mapkey('co', '#7Copy title and link to org', () => {
+api.mapkey('co', '#7Copy title and link to org', () => {
   copyTitleAndUrl('[[%URL%][%TITLE%]]')
 })
-mapkey('YY', '#7Copy title and link to multi line', () => {
+api.mapkey('YY', '#7Copy title and link to multi line', () => {
   copyTitleAndUrl('%TITLE%\n%URL%')
 })
 //  8: Omnibar
@@ -351,10 +353,10 @@ mapkey('YY', '#7Copy title and link to multi line', () => {
 // 10: vim-like marks
 // 11: Settings
 // 12: Chrome URLs
-mapkey('gS', '#12Open Chrome settings', () => tabOpenLink('chrome://settings/'))
+api.mapkey('gS', '#12Open Chrome settings', () => tabOpenLink('chrome://settings/'))
 // 13: Proxy
 // 14: Misc
-mapkey(';a', '#14Save to Instapaper', () => {
+api.mapkey(';a', '#14Save to Instapaper', () => {
   function iprl5() {
     var d = document,
       z = d.createElement('scr' + 'ipt'),
@@ -378,7 +380,7 @@ mapkey(';a', '#14Save to Instapaper', () => {
   }
   iprl5()
 })
-mapkey(';t', '#14google translate', () => {
+api.mapkey(';t', '#14google translate', () => {
   const selection = window.getSelection().toString()
   if (selection === '') {
     // 文字列選択してない場合はページ自体を翻訳にかける
@@ -393,7 +395,7 @@ mapkey(';t', '#14google translate', () => {
   }
 })
 
-mapkey(';b', '#14hatena bookmark', () => {
+api.mapkey(';b', '#14hatena bookmark', () => {
   const { location } = window
   let url = location.href
   if (location.href.startsWith('https://app.getpocket.com/read/')) {
@@ -419,7 +421,7 @@ mapkey(';b', '#14hatena bookmark', () => {
   throw new Error('はてなブックマークに対応していないページ')
 })
 
-mapkey(';g', '#14魚拓', () => {
+api.mapkey(';g', '#14魚拓', () => {
   tabOpenLink(`https://megalodon.jp/?url=${location.href}`)
 })
 
@@ -434,7 +436,7 @@ const escapeForOrg = (text) => {
 }
 const getUrl = (path, query) => {
   const queryString = Object.entries(query)
-    .map(
+    .api.map(
       ([key, value]) =>
         `${encodeURIComponent(key)}=${escapeForOrg(encodeURIComponent(value))}`
     )
@@ -451,20 +453,20 @@ const orgCapture = (template) => {
   console.log(`orgCapture: ${url}`)
   window.location.href = url
 }
-mapkey('ocm', '#14org-capture memo', () => {
+api.mapkey('ocm', '#14org-capture memo', () => {
   orgCapture('M')
 })
-mapkey('oct', '#14org-capture todo', () => {
+api.mapkey('oct', '#14org-capture todo', () => {
   orgCapture('T')
 })
-mapkey('ocl', '#14org-capture read it later', () => {
+api.mapkey('ocl', '#14org-capture read it later', () => {
   orgCapture('L')
 })
 
-mapkey('=q', '#14Delete query', () => {
+api.mapkey('=q', '#14Delete query', () => {
   location.href = location.href.replace(/\?.*/, '')
 })
-mapkey('=h', '#14Delete hash', () => {
+api.mapkey('=h', '#14Delete hash', () => {
   location.href = location.href.replace(/\#.*/, '')
 })
 // 15: Insert Mode
@@ -478,7 +480,7 @@ const qmarksMapKey = (prefix, urls, newTab) => {
     })
   }
   for (const key in urls) {
-    mapkey(prefix + key, `qmark: ${urls[key]}`, openLink(urls[key], newTab))
+    api.mapkey(prefix + key, `qmark: ${urls[key]}`, openLink(urls[key], newTab))
   }
 }
 const qmarksUrls = {
@@ -488,7 +490,7 @@ const qmarksUrls = {
   tw: 'https://twitter.com/',
   td: 'https://tweetdeck.twitter.com/',
 }
-unmap('gn')
+api.unmap('gn')
 qmarksMapKey('gn', qmarksUrls, true)
 qmarksMapKey('gO', qmarksUrls, false)
 
@@ -500,20 +502,20 @@ if (/speakerdeck.com/.test(window.location.hostname)) {
       .querySelector('.speakerdeck-iframe')
       .contentWindow.document.querySelector(selector)
       .click()
-  mapkey(']', 'next page', clickElmFr('.sd-player-next'))
-  mapkey('[', 'prev page', clickElmFr('.sd-player-previous'))
+  api.mapkey(']', 'next page', clickElmFr('.sd-player-next'))
+  api.mapkey('[', 'prev page', clickElmFr('.sd-player-previous'))
 }
 
 if (/www.slideshare.net/.test(window.location.hostname)) {
-  mapkey(']', 'next page', clickElm('.j-next-btn'))
-  mapkey('[', 'prev page', clickElm('.j-prev-btn'))
+  api.mapkey(']', 'next page', clickElm('.j-next-btn'))
+  api.mapkey('[', 'prev page', clickElm('.j-prev-btn'))
 }
 
 if (/booklog.jp/.test(window.location.hostname)) {
-  mapkey(']', 'next page', clickElm('#modal-review-next'))
-  mapkey('[', 'prev page', clickElm('#modal-review-prev'))
-  mapkey('d', '読み終わった', clickElm('#status3'))
-  mapkey('R', 'Read by Kindle', () =>
+  api.mapkey(']', 'next page', clickElm('#modal-review-next'))
+  api.mapkey('[', 'prev page', clickElm('#modal-review-prev'))
+  api.mapkey('d', '読み終わった', clickElm('#status3'))
+  api.mapkey('R', 'Read by Kindle', () =>
     RUNTIME('openLink', {
       tab: { tabbed: true },
       url: `https://read.amazon.co.jp/?asin=${document
@@ -525,7 +527,7 @@ if (/booklog.jp/.test(window.location.hostname)) {
 }
 
 if (/www.amazon.co.jp/.test(window.location.hostname)) {
-  mapkey('=s', '#14URLを短縮', () => {
+  api.mapkey('=s', '#14URLを短縮', () => {
     location.href = `https://www.amazon.co.jp/dp/${
       document.querySelectorAll("[name='ASIN'], [name='ASIN.0']")[0].value
     }`
@@ -547,45 +549,49 @@ if (
     url.searchParams.set('date', formatDate(date, 'YYYYMMDD'))
     location.href = url.href
   }
-  mapkey(']]', 'next date', moveDate(1))
-  mapkey('[[', 'prev date', moveDate(-1))
+  api.mapkey(']]', 'next date', moveDate(1))
+  api.mapkey('[[', 'prev date', moveDate(-1))
 }
 
 if (/youtube.com/.test(window.location.hostname)) {
-  mapkey(
+  api.mapkey(
     'F',
     'Toggle fullscreen',
     clickElm('.ytp-fullscreen-button.ytp-button')
   )
-  mapkey(
+  api.mapkey(
     'gH',
     'GoTo Home',
     () => (location.href = 'https://www.youtube.com/feed/subscriptions?flow=2')
   )
 }
 
-unmapAllExcept(
+api.unmapAllExcept(
   ['E', 'R', 'd', 'u', 'T', 'f', 'F', 'C', 'x', 'S', 'H', 'L', 'cm'],
   /mail.google.com|twitter.com|feedly.com|i.doit.im/
 )
-if (/^https:\/\/www.amazon.co.jp\/gp\/video\//.test(window.location.href)) {
-  // for Video Speed Controller
-  unmapKeys(['d', 's', 'z', 'x', 'r', 'g'])
-}
 
 // ------------------------------------------------------------
 // style
-Hints.style('text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; color: #33cccc; font-size: 18px; font-family: Overpass, "ヒラギノ角ゴ Pro", Avenir, sans-serif; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#565756), color-stop(100%,#444444)); border: 1px solid #E4E4E4; opacity: 1.0; text-shadow: none !important;')
-Hints.style (`font-family: monospace; font-size: 13pt; text-transform: lowercase;`, "text")
+api.Hints.style('text-shadow: -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black, 1px 1px 2px black; color: #33cccc; font-size: 16pt; font-family: Cica, "ヒラギノ角ゴ Pro", Avenir, sans-serif;text-transform: lowercase; background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#565756), color-stop(100%,#444444)); border: 1px solid #E4E4E4; opacity: 1.0; text-shadow: none !important;')
+api.Hints.style (`font-family: Cica; font-size: 16pt; text-transform: lowercase;`, "text")
 // theme
 settings.theme = `
-  .sk_theme {
-    font-family: sans-serif;
-    font-size: 13pt;
-}`;
+.sk_theme {
+  font-family: Cica;
+  font-size: 18pt;
+}
+#sk_status, #sk_find {
+  font-family: Cica;
+  font-size: 18pt;
+}
+#sk_omnibarSearchResult {
+  font-family: Cica;
+  font-size: 18pt;
+} 
+#sk_omnibarSearchResult .highlight {
+  background: #f9ec89;
+}
+`;
 
-// click `Save` button to make above settings to take effect.
-
-// refs.
-// * https://github.com/b0o/surfingkeys-conf
-// * https://github.com/ncaq/surfingkeys-ncaq
+// click `Save` button to make above settings to take effect.span style='color:#f
