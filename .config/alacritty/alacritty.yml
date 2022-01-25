@@ -15,6 +15,7 @@ window:
   padding:
     x: 2
     y: 2
+  opacity: 0.95
 
 scrolling:
   history: 10000
@@ -76,7 +77,6 @@ cursor:
   vi_mode_style: Block
 
 live_config_reload: true
-background_opacity: 0.95
 
 key_bindings:
   - { key: "LBracket",       mods: Control,   chars: "\x1b" }
