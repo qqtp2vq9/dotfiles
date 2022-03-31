@@ -17,10 +17,18 @@
 [alias]
 	conflicted = !vim +Conflicted
 [pager]
-	log = diff-highlight | less
-	show = diff-highlight | less
-	diff = diff-highlight | less
+        branch = cat
+        diff = delta
+        log = delta
+        reflog = delta
+        show = delta
+
 [interactive]
-	diffFilter = diff-highlight
+        diffFilter = delta --color-only
+
+[delta]
+        features = side-by-side line-numbers decorations
+        whitespace-error-style = 22 reverse
+        syntax-theme = GitHub
+
 [diff]
-	compactionHeuristic = true
