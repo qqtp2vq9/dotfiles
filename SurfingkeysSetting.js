@@ -297,7 +297,7 @@ api.mapkey(
 api.mapkey(
   'yI',
   '#7Copy Image URL',
-  api.Hint('img', (i) => Clipboard.write(i.src)),
+  Hint('img', (i) => Clipboard.write(i.src)),
   ri
 )
 
