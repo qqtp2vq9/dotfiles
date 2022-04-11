@@ -14,7 +14,7 @@ settings.tabsThreshold = false
 settings.stealFocusOnLoad = true
 settings.enableAutoFocus = false
 settings.showModeStatus = true
-settings.cursorAtEndOfInput = false;
+settings.cursorAtEndOfInput = false
 
 // ---- Utils ----
 // p押下で一時的にOFF
@@ -319,7 +319,7 @@ const copyHtmlLink = () => {
   sel.addRange(range)
   document.execCommand('copy', false, null)
   document.body.removeChild(clipNode)
-  Front.showBanner('Ritch Copied: ' + document.title)
+  api.Front.showBanner('Ritch Copied: ' + document.title)
 }
 
 api.mapkey('cm', '#7Copy title and link to markdown', () => {
