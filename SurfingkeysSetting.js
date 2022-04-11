@@ -14,6 +14,7 @@ settings.tabsThreshold = false
 settings.stealFocusOnLoad = true
 settings.enableAutoFocus = false
 settings.showModeStatus = true
+settings.cursorAtEndOfInput = false;
 
 // ---- Utils ----
 // p押下で一時的にOFF
@@ -296,7 +297,7 @@ api.mapkey(
 api.mapkey(
   'yI',
   '#7Copy Image URL',
-  Hint('img', (i) => Clipboard.write(i.src)),
+  api.Hint('img', (i) => Clipboard.write(i.src)),
   ri
 )
 
@@ -304,7 +305,7 @@ const copyTitleAndUrl = (format) => {
   const text = format
     .replace('%URL%', location.href)
     .replace('%TITLE%', document.title)
-  Clipboard.write(text)
+  api.Clipboard.write(text)
 }
 const copyHtmlLink = () => {
   const clipNode = document.createElement('a')
