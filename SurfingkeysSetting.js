@@ -104,7 +104,7 @@ unmapKeys(['ob', 'sb', 'ow', 'sw'])
 // Google 1年以内
 api.addSearchAlias('1', 'Google 1年以内', 'https://www.google.co.jp/search?q={0}&tbs=qdr:y');
 api.mapkey('o1', '#8Open Search with alias 1', function() {
-  Front.openOmnibar({type: "SearchEngine", extra: "1"});
+  api.Front.openOmnibar({type: "SearchEngine", extra: "1"});
 });
 
 // Qiita
@@ -126,7 +126,7 @@ api.addSearchAlias(
     )
 )
 api.mapkey('otw', '#8Open Search with alias tw', function () {
-  Front.openOmnibar({ type: 'SearchEngine', extra: 'tw' })
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'tw' })
 })
 
 // Search
@@ -143,8 +143,8 @@ api.addSearchAlias(
   'Yahoo!検索',
   'https://search.yahoo.co.jp/search?ei=UTF-8&p='
 )
-api.mapkey('sy', '#7 Yahoo Search with alias y', function () {
-  Front.openOmnibar({ type: 'SearchEngine', extra: 'y' })
+api.mapkey('oy', '#7 Yahoo Search with alias y', function () {
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'y' })
 })
 
 // Yahoo!検索 1年以内
@@ -153,8 +153,8 @@ api.addSearchAlias(
   'Yahoo!検索 1年以内',
   'https://search.yahoo.co.jp/search?ei=UTF-8&vd=y&p='
 )
-api.mapkey('sy1', '#7 Yahoo Search with alias y1', function () {
-  Front.openOmnibar({ type: 'SearchEngine', extra: 'y1' })
+api.mapkey('oy1', '#7 Yahoo Search with alias y1', function () {
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'y1' })
 })
 
 // Yahoo!リアルタイム検索
@@ -164,7 +164,7 @@ api.addSearchAlias(
   'https://search.yahoo.co.jp/realtime/search?ei=UTF-8&p='
 )
 api.mapkey('or', '#8Open Search with alias r', function () {
-  Front.openOmnibar({ type: 'SearchEngine', extra: 'r' })
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'r' })
 })
 
 // Bing
@@ -173,8 +173,8 @@ api.addSearchAlias(
   'Bing検索',
   'https://www.bing.com/search?&q={0}&pq={0}'
 )
-api.mapkey('sb', '#7 Yahoo Search with alias y', function () {
-  Front.openOmnibar({ type: 'SearchEngine', extra: 'b' })
+api.mapkey('ob', '#7 Yahoo Search with alias y', function () {
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'b' })
 })
 
 // Wikipedia jp
@@ -291,13 +291,13 @@ api.addSearchAlias(
 )
 
 api.mapkey('ok', '#8Open Search with alias k', function () {
-  Front.openOmnibar({ type: 'SearchEngine', extra: 'k' })
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'k' })
 })
 
 // alc
 api.addSearchAlias('al', 'alc', 'https://eow.alc.co.jp/search?q=')
 api.mapkey('oa', '#8Open Search with alias al', function () {
-  Front.openOmnibar({ type: 'SearchEngine', extra: 'al' })
+  api.Front.openOmnibar({ type: 'SearchEngine', extra: 'al' })
 })
 api.unmap("<Ctrl-'>")
 api.mapkey("<Ctrl-'>", 'eowf', () => {
@@ -426,36 +426,6 @@ api.mapkey(';t', '#14google translate', () => {
   }
 })
 
-api.mapkey(';b', '#14hatena bookmark', () => {
-  const { location } = window
-  let url = location.href
-  if (location.href.startsWith('https://app.getpocket.com/read/')) {
-    url = decodeURIComponent(
-      document
-        .querySelector('header a')
-        .getAttribute('href')
-        .replace('https://getpocket.com/redirect?url=', '')
-    )
-  }
-  if (url.startsWith('http:')) {
-    tabOpenBackground(
-      `http://b.hatena.ne.jp/entry/${url.replace('http://', '')}`
-    )
-    return
-  }
-  if (url.startsWith('https:')) {
-    tabOpenBackground(
-      `http://b.hatena.ne.jp/entry/s/${url.replace('https://', '')}`
-    )
-    return
-  }
-  throw new Error('はてなブックマークに対応していないページ')
-})
-
-api.mapkey(';g', '#14魚拓', () => {
-  tabOpenLink(`https://megalodon.jp/?url=${location.href}`)
-})
-
 // org
 const escapeChars = ['(', ')', "'"]
 const escapeForOrg = (text) => {
@@ -474,32 +444,7 @@ const getUrl = (path, query) => {
     .join('&')
   return [path, queryString].join('?')
 }
-const orgCapture = (template) => {
-  const url = getUrl('org-protocol://capture', {
-    template,
-    url: window.location.href,
-    title: document.title.replace(/\|/g, '-'),
-    body: window.getSelection(),
-  })
-  console.log(`orgCapture: ${url}`)
-  window.location.href = url
-}
-api.mapkey('ocm', '#14org-capture memo', () => {
-  orgCapture('M')
-})
-api.mapkey('oct', '#14org-capture todo', () => {
-  orgCapture('T')
-})
-api.mapkey('ocl', '#14org-capture read it later', () => {
-  orgCapture('L')
-})
 
-api.mapkey('=q', '#14Delete query', () => {
-  location.href = location.href.replace(/\?.*/, '')
-})
-api.mapkey('=h', '#14Delete hash', () => {
-  location.href = location.href.replace(/\#.*/, '')
-})
 // 15: Insert Mode
 
 // ---- qmarks ----
@@ -524,78 +469,6 @@ const qmarksUrls = {
 api.unmap('gn')
 qmarksMapKey('gn', qmarksUrls, true)
 qmarksMapKey('gO', qmarksUrls, false)
-
-// --- Site-specific mappings ---
-const clickElm = (selector) => () => document.querySelector(selector).click()
-if (/speakerdeck.com/.test(window.location.hostname)) {
-  const clickElmFr = (selector) => () =>
-    document
-      .querySelector('.speakerdeck-iframe')
-      .contentWindow.document.querySelector(selector)
-      .click()
-  api.mapkey(']', 'next page', clickElmFr('.sd-player-next'))
-  api.mapkey('[', 'prev page', clickElmFr('.sd-player-previous'))
-}
-
-if (/www.slideshare.net/.test(window.location.hostname)) {
-  api.mapkey(']', 'next page', clickElm('.j-next-btn'))
-  api.mapkey('[', 'prev page', clickElm('.j-prev-btn'))
-}
-
-if (/booklog.jp/.test(window.location.hostname)) {
-  api.mapkey(']', 'next page', clickElm('#modal-review-next'))
-  api.mapkey('[', 'prev page', clickElm('#modal-review-prev'))
-  api.mapkey('d', '読み終わった', clickElm('#status3'))
-  api.mapkey('R', 'Read by Kindle', () =>
-    RUNTIME('openLink', {
-      tab: { tabbed: true },
-      url: `https://read.amazon.co.jp/?asin=${document
-        .querySelector('.item-area-info-title a')
-        .getAttribute('href')
-        .replace(/.*\//, '')}`,
-    })
-  )
-}
-
-if (/www.amazon.co.jp/.test(window.location.hostname)) {
-  api.mapkey('=s', '#14URLを短縮', () => {
-    location.href = `https://www.amazon.co.jp/dp/${
-      document.querySelectorAll("[name='ASIN'], [name='ASIN.0']")[0].value
-    }`
-  })
-}
-
-if (
-  /^https:\/\/b.hatena.ne.jp\/.*\/hotentry\?date/.test(window.location.href)
-) {
-  const moveDate = (diff) => () => {
-    const url = new URL(window.location.href)
-    const dateTxt = url.searchParams.get('date')
-    const [_, yyyy, mm, dd] = dateTxt.match(/(....)(..)(..)/)
-    const date = new Date(
-      parseInt(yyyy, 10),
-      parseInt(mm, 10) - 1,
-      parseInt(dd, 10) + diff
-    )
-    url.searchParams.set('date', formatDate(date, 'YYYYMMDD'))
-    location.href = url.href
-  }
-  api.mapkey(']]', 'next date', moveDate(1))
-  api.mapkey('[[', 'prev date', moveDate(-1))
-}
-
-if (/youtube.com/.test(window.location.hostname)) {
-  api.mapkey(
-    'F',
-    'Toggle fullscreen',
-    clickElm('.ytp-fullscreen-button.ytp-button')
-  )
-  api.mapkey(
-    'gH',
-    'GoTo Home',
-    () => (location.href = 'https://www.youtube.com/feed/subscriptions?flow=2')
-  )
-}
 
 api.unmapAllExcept(
   ['E', 'R', 'd', 'u', 'T', 'f', 'F', 'C', 'x', 'S', 'H', 'L', 'cm'],
