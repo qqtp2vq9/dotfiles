@@ -137,6 +137,26 @@ api.addSearchAlias('fa', 'facebook検索', 'https://www.facebook.com/search/top?
 api.addSearchAlias('gt', 'google翻訳', 'https://www.google.com/search?q=%E7%BF%BB%E8%A8%B3%20{0}')
 api.addSearchAlias('t',  'DeepL翻訳', 'https://www.deepl.com/translator#ja/en/{0}')
 
+// Yahoo!検索
+api.addSearchAlias(
+  'y',
+  'Yahoo!検索',
+  'https://search.yahoo.co.jp/search?ei=UTF-8&p='
+)
+api.mapkey('sy', '#7 Yahoo Search with alias y', function () {
+  Front.openOmnibar({ type: 'SearchEngine', extra: 'y' })
+})
+
+// Yahoo!検索 1年以内
+api.addSearchAlias(
+  'y1',
+  'Yahoo!検索 1年以内',
+  'https://search.yahoo.co.jp/search?ei=UTF-8&vd=y&p='
+)
+api.mapkey('sy1', '#7 Yahoo Search with alias y1', function () {
+  Front.openOmnibar({ type: 'SearchEngine', extra: 'y1' })
+})
+
 // Yahoo!リアルタイム検索
 api.addSearchAlias(
   'r',
@@ -145,6 +165,16 @@ api.addSearchAlias(
 )
 api.mapkey('or', '#8Open Search with alias r', function () {
   Front.openOmnibar({ type: 'SearchEngine', extra: 'r' })
+})
+
+// Bing
+api.addSearchAlias(
+  'b',
+  'Bing検索',
+  'https://www.bing.com/search?&q={0}&pq={0}'
+)
+api.mapkey('sb', '#7 Yahoo Search with alias y', function () {
+  Front.openOmnibar({ type: 'SearchEngine', extra: 'b' })
 })
 
 // Wikipedia jp
